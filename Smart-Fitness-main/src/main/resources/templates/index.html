@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fitness Gyms</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease-in-out;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        /* Header / Nav */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background-color: #1a1a1a;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-header {
+            background-color: #1a1a1a;
+        }
+
+        .benefits-header {
+            background-color: #fefcdd;
+            color: #333;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        header .logo img {
+            height: 60px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        header .logo img:hover {
+            transform: scale(1.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: #ff2600;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #0433ff;
+            visibility: hidden;
+            transform: scaleX(0);
+            transition: all 0.3s ease-in-out 0s;
+        }
+
+        nav ul li a:hover::before {
+            visibility: visible;
+            transform: scaleX(1);
+        }
+
+        nav ul li a:hover {
+            color: #0433ff;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+            color: #ffffff;
+            background-size: cover;
+            background-position: center;
+            animation: changeBackground 15s infinite ease-in-out;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 800px;
+            padding: 0 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-in-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-buttons .btn {
+            display: inline-block;
+            background-color: #fffc41;
+            color: #000000;
+            padding: 15px 30px;
+            margin-right: 15px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 1s ease-in-out forwards;
+            animation-delay: 1s;
+        }
+
+        .hero-buttons .btn:hover {
+            background-color: #ff2600;
+            transform: translateY(-5px);
+        }
+
+        /* Container for the Two-Column Layout */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 30px;
+        }
+
+        /* Text Column */
+        .info {
+            flex: 1;
+            margin-right: 30px;
+            animation: slideInLeft 1s ease-in-out;
+        }
+
+        .info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        .info ul {
+            list-style-type: disc;
+            margin-left: 30px;
+            margin-bottom: 30px;
+        }
+
+        .info li {
+            margin-bottom: 12px;
+        }
+
+        /* Button Style */
+        .btn {
+            display: inline-block;
+            background-color: #d60000;
+            color: #fff;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #ff2e2e;
+            transform: translateY(-5px);
+        }
+
+        /* Image Column */
+        .image-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: slideInRight 1s ease-in-out;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Brand / Instagram Section */
+        .brand-section {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 30px;
+            text-align: left;
+        }
+
+        .brand-section img {
+            height: 60px;
+            width: auto;
+            margin-bottom: 15px;
+        }
+
+        .brand-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .brand-section p {
+            margin-bottom: 15px;
+        }
+
+        .brand-section a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .brand-section a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .info {
+                margin-right: 0;
+                margin-bottom: 30px;
+            }
+
+            .image-container {
+                margin-bottom: 30px;
+            }
+        }
+
+        /* Benefits Section */
+        .benefits {
+            display: flex;
+            justify-content: space-around;
+            padding: 60px 30px;
+            text-align: left;
+        }
+
+        .benefit {
+            width: 30%;
+            text-align:
+                left;
+            opacity: 0;
+            animation: fadeInUp 1s ease-in-out forwards;
+        }
+
+        .benefit:nth-child(1) {
+            animation-delay: 0.3s;
+        }
+
+        .benefit:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+
+        .benefit:nth-child(3) {
+            animation-delay: 0.9s;
+        }
+
+        .benefit h2 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .benefit p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        /* Get in Touch Section */
+        .get-in-touch {
+            display: flex;
+            padding: 60px 30px;
+            background-color: #fff;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out forwards;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-form {
+            width: 50%;
+            padding: 30px;
+            text-align: center;
+            animation: slideInLeft 1s ease-in-out;
+        }
+
+        .contact-form .logo img {
+            max-width: 180px;
+            margin-bottom: 20px;
+        }
+
+        .contact-form h1 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+        }
+
+        .contact-form form {
+            display: grid;
+            grid-gap: 15px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .contact-form button {
+            padding: 15px 30px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .contact-form button:hover {
+            background-color: #0056b3;
+            transform: translateY(-5px);
+        }
+
+        .app-info {
+            width: 50%;
+            padding: 30px;
+            text-align: left;
+            animation: slideInRight 1s ease-in-out;
+        }
+
+        .app-info h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .app-info p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        /* Image Background Animation */
+        @keyframes changeBackground {
+            0% {
+                background-image: url("/images/BG1.jpg");
+            }
+
+            25% {
+                background-image: url("/images/BG2.jpg");
+            }
+
+            50% {
+                background-image: url("/images/BG3.jpg");
+            }
+
+            75% {
+                background-image: url("/images/BG4.jpg");
+            }
+
+            100% {
+                background-image: url("/images/loginBG5.jpg");
+            }
+        }
+
+        /* Fade In Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Fade In Up Animation */
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Slide In Left Animation */
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Slide In Right Animation */
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Reset & Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease-in-out;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ffffff;
+            color: #080808;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+
+
+        /* ... (Other styles from previous responses) ... */
+
+        .footer {
+            background-color: #000000;
+            color: #fff;
+            padding: 40px 20px;
+            text-align: left;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 2500px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            width: 23%;
+            margin-bottom: 20px;
+        }
+
+        .about-us p {
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .footer-logo {
+            max-width: 20px;
+            /* Adjusted logo size */
+            margin-bottom: 10px;
+
+        }
+
+        .footer-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .footer-section p,
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li a::before {
+            content: ">";
+            margin-right: 5px;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            margin-right: 10px;
+            color: #ffffff;
+            opacity: 1.0;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+
+        .social-icons a:hover {
+            background-color: #f4ecec;
+            color: #121111;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #ffffff;
+            margin-top: 40px;
+            width: 100%;
+        }
+
+        /* Trainer styles moved to style.css */
+
+        /* Remaining trainer styles moved to style.css */
+
+        /* BMI Calculator Section */
+        .bmi-calculator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+            background: #000000;
+        }
+
+        .bmi-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00f900;
+            /* Green */
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .bmi-container {
+            background: #292929;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            width: 350px;
+            box-shadow: 0px 4px 10px rgb(255, 255, 255, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .bmi-container h2 {
+            color: #ff4d4d;
+            margin-bottom: 10px;
+        }
+
+        .bmi-container label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .bmi-description {
+            color: #ffffff;
+            /* Orange-Red */
+            font-size: 16px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .bmi-container input,
+        .bmi-container select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #000000;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        .bmi-container input:focus,
+        .bmi-container select:focus {
+            outline: none;
+            border: 2px solid #ff4d4d;
+            box-shadow: 0px 0px 8px rgba(255, 77, 77, 0.7);
+        }
+
+        .bmi-container button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .bmi-container button:hover {
+            background: #e60000;
+            transform: scale(1.05);
+        }
+
+        .result {
+            margin-top: 15px;
+            font-size: 18px;
+            color: #ff4d4d;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        .result.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* BMI Section Styling */
+        .bmi-calculator {
+            position: relative;
+            text-align: center;
+            padding: 50px 20px;
+            color: white;
+            background: url('/images/BG5.jpg') no-repeat center center/cover;
+            /* Replace with your image */
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        /* Dark overlay for better text readability */
+        .bmi-calculator::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            /* Adjust opacity as needed */
+            z-index: 1;
+        }
+
+        /* Container Styling */
+        .bmi-container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.1);
+            /* Slight transparent background */
+            padding: 30px;
+            border-radius: 10px;
+            width: 50%;
+            margin: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Form Elements */
+        .bmi-container label,
+        .bmi-container input,
+        .bmi-container select,
+        .bmi-container button {
+            display: block;
+            width: 80%;
+            margin: 10px auto;
+            font-size: 16px;
+        }
+
+        .bmi-container input,
+        .bmi-container select {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .bmi-container button {
+            padding: 12px 20px;
+            background: #ff5733;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .bmi-container button:hover {
+            background: #e74c3c;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<script></script>
+
+<body>
+    <header class="main-header">
+        <div class="logo">
+            <img src="images/111.png" alt="Smart Fitness Logo" />
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="/memplan">Membership Plans</a></li>
+                <li><a href="/supplements">Supplements</a></li>
+                <li><a href="/gallery">Gallery</a></li>
+                <li><a href="/login">Login</a></li>
+                <li><a href="/About_us">About Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="overlay"></div>
+        <div class="hero-content">
+            <h1>Live your best life</h1>
+            <p>
+                At "Smart Fitness", we believe that every day is a fresh opportunity to become the strongest version of
+                yourself. Our dedicated trainers, state-of-the-art equipment, and welcoming community will support you
+                at every step - whether you're a beginner or a seasoned athlete. We're more than just a gym; we're a
+                family that motivates and empowers each other to go beyond our limits.<br><br>
+                Step inside Smart Fitness and discover a place where you'll not only build physical strength but also
+                confidence, discipline, and lifelong friendships. Join us today and take the first step toward a
+                stronger, healthier, and happier you!
+            </p>
+            <div class="hero-buttons">
+                <a href="/login" class="btn">Login</a>
+                <a href="/register" class="btn">Register Now</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="info">
+            <h1>Discover Smart Fitness Gyms</h1>
+            <p class="subtitle">Sri Lanka's Trusted Fitness Trailblazers for Three Decades</p>
+            <ul>
+                <li>Unmatched Scale: The largest chain of gyms with over 20 gyms and counting</li>
+                <li>World class equipment: Equipped with the best brand in Sri Lanka</li>
+                <li>Over 20,000 sq ft of floor area in a single location</li>
+                <li>Offering over 250 different types of free weights and dumbbells</li>
+                <li>Housing over 300 machines</li>
+                <li>Offering over 100 cardio machines</li>
+                <li>Over 300 new pieces of new weight equipment</li>
+            </ul>
+            <a href="/About_us" class="btn">Learn More</a>
+        </div>
+        <div class="image-container">
+            <img src="images/222.jpg" alt="Smart Fitness Gym Photo" />
+        </div>
+    </div>
+
+    <header class="benefits-header">
+        <h1>BENEFITS OF REGULAR EXERCISE</h1>
+        <p>Exercise offers a variety of physical and mental health benefits. It can help you live longer and healthier.
+            Exercise can also help prevent many health problems. It's important to find the right exercise for you.
+            Check with your doctor before starting a new exercise program.</p>
+    </header>
+
+    <section class="benefits">
+        <div class="benefit">
+            <h2>Improved Physical Health</h2>
+            <p>Regular exercise can help you control your weight, reduce your risk of heart disease, and improve your
+                mental health and mood. It can also help you sleep better and reduce your risk of some cancers.</p>
+        </div>
+        <div class="benefit">
+            <h2>Enhanced Mental Health</h2>
+            <p>Regular exercise can help you feel better about yourself. It can also help you reduce stress, anxiety,
+                depression and ADHD. It can also improve your sleep, which is often disrupted by stress, depression or
+                anxiety.</p>
+        </div>
+        <div class="benefit">
+            <h2>Increased Energy Levels</h2>
+            <p>Regular exercise can help you feel more energetic throughout the day. And when you have more energy,
+                you're more likely to be active and get even more benefits from exercise.</p>
+        </div>
+    </section>
+    <section class="trainers">
+        <div class="trainers-header">
+            <h2>EXPERT TRAINERS</h2>
+            <p>Meet our expert trainers, specializing in strength, muscle, and power training. They offer personalized
+                guidance to help you achieve your fitness goals.</p>
+        </div>
+        <div class="trainers-container">
+            <div class="trainer">
+                <div class="trainer-image">
+                    <img src="/images/T1.jpg" alt="Aryjuna Wicramasinghe">
+                </div>
+                <h3>Aryjuna Wicramasinghe</h3>
+                <p class="trainer-title">Muscle Trainer</p>
+                <p class="trainer-description">Aryjuna is passionate about helping people build muscle and increase
+                    their overall fitness. He has a background in competitive bodybuilding and is knowledgeable in
+                    nutrition and supplementation.</p>
+                <div class="trainer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="trainer">
+                <div class="trainer-image">
+                    <img src="/images/T3.jpg" alt="Nethmi Suriya">
+                </div>
+                <h3>Nethmi Suriya</h3>
+                <p class="trainer-title">Strength and Yoga Trainer</p>
+                <p class="trainer-description">Nethmi is a dedicated trainer who focuses on helping clients develop
+                    power and explosiveness. He has experience working with athletes of all levels and is certified in
+                    sports performance training.</p>
+                <div class="trainer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="trainer">
+                <div class="trainer-image">
+                    <img src="/images/T2.webp" alt="Mahela">
+                </div>
+                <h3>Mahela Wicramasinghe</h3>
+                <p class="trainer-title">Power Trainer</p>
+                <p class="trainer-description">Mahela is a certified personal trainer with over 10 years of experience
+                    helping clients achieve their strength and fitness goals. He specializes in functional training and
+                    creating customized workout plans.</p>
+                <div class="trainer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bmi-calculator">
+        <div class="bmi-container">
+            <h2>BMI Calculator</h2>
+            <p>Calculate your Body Mass Index (BMI) to check if you have a healthy weight.</p>
+
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" placeholder="Enter your weight" required>
+
+            <label for="height">Height (cm):</label>
+            <input type="number" id="height" placeholder="Enter your height" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender">
+                <option value="" disabled selected>Select your gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" placeholder="Enter your age" required>
+
+            <button onclick="calculateBMI()">Calculate Now</button>
+
+            <p id="bmi-result" class="result"></p>
+        </div>
+        <script>
+            function calculateBMI() {
+                const weight = parseFloat(document.getElementById("weight").value);
+                const height = parseFloat(document.getElementById("height").value);
+                const gender = document.getElementById("gender").value;
+                const age = parseInt(document.getElementById("age").value);
+                const resultBox = document.getElementById("bmi-result");
+
+                if (!weight || !height || !gender || !age) {
+                    resultBox.textContent = "Please fill in all fields.";
+                    resultBox.classList.add("show");
+                    return;
+                }
+
+                // BMI calculation
+                const heightM = height / 100;
+                const bmi = weight / (heightM * heightM);
+                let category = "";
+                if (bmi < 18.5) category = "Underweight";
+                else if (bmi < 25) category = "Normal weight";
+                else if (bmi < 30) category = "Overweight";
+                else category = "Obese";
+
+                resultBox.textContent = `Your BMI is ${bmi.toFixed(1)} (${category})`;
+                resultBox.classList.add("show");
+            }
+        </script>
+    </section>
+
+
+
+    <section class="get-in-touch">
+        <div class="contact-form">
+            <h1>Questions? Contact us below:</h1>
+            <form id="contactForm">
+                <input type="text" name="firstName" placeholder="First Name" required>
+                <input type="text" name="lastName" placeholder="Last Name" required>
+                <input type="text" name="street" placeholder="Street" required>
+                <input type="text" name="city" placeholder="City" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <textarea name="message" placeholder="Message" required></textarea>
+                <button type="submit">Send</button>
+                <div id="formMessage"
+                    style="display:none; margin-top: 15px; padding: 15px; border-radius: 5px; text-align: center; font-weight: 500;">
+                </div>
+            </form>
+        </div>
+
+        <script>
+            document.getElementById("contactForm").addEventListener("submit", async function (e) {
+                e.preventDefault();
+
+                const formMessage = document.getElementById("formMessage");
+                const formData = {
+                    firstName: this.elements.firstName.value,
+                    lastName: this.elements.lastName.value,
+                    street: this.elements.street.value,
+                    city: this.elements.city.value,
+                    email: this.elements.email.value,
+                    message: this.elements.message.value
+                };
+
+                try {
+                    const response = await fetch("/contact", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        formMessage.textContent = "✅ " + result.message;
+                        formMessage.style.backgroundColor = "#d4edda";
+                        formMessage.style.color = "#155724";
+                        formMessage.style.border = "1px solid #c3e6cb";
+                        formMessage.style.display = "block";
+                        this.reset(); // Reset the form
+                    } else {
+                        formMessage.textContent = "❌ " + result.message;
+                        formMessage.style.backgroundColor = "#f8d7da";
+                        formMessage.style.color = "#721c24";
+                        formMessage.style.border = "1px solid #f5c6cb";
+                        formMessage.style.display = "block";
+                    }
+                } catch (error) {
+                    formMessage.textContent = "❌ Error sending message. Please try again.";
+                    formMessage.style.backgroundColor = "#f8d7da";
+                    formMessage.style.color = "#721c24";
+                    formMessage.style.border = "1px solid #f5c6cb";
+                    formMessage.style.display = "block";
+                }
+            });
+        </script>
+
+
+        <div class="app-info">
+            <h2>POWER SCORE</h2>
+            <br>
+            <p>At Power Score, we believe that fitness should be fun and accessible to everyone. That's why we created a
+                fitness app that is easy to use and helps you track your progress.</p>
+            <br>
+            <p>It's a scientifically proven fact that people who track their fitness progress are more likely to achieve
+                their goals. The app is available for download on the App Store and Google Play.</p>
+            <br><br>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section about-us">
+                <h2>About Us</h2>
+                <p>We are a team of passionate fitness enthusiasts who believe in the power of exercise to transform
+                    lives.<br><br> Our mission is to make fitness accessible to everyone, regardless of their age,
+                    experience, or fitness level.</p>
+            </div>
+            <div class="footer-section quick-links">
+                <h2>Quick Links</h2>
+                <ul>
+                    <li><a href="/index"> Home</a></li>
+                    <li><a href="/About_us"> About Us</a></li>
+                    <li><a href="/About_us#features"> Our Features</a></li>
+                    <li><a href="/About_us#classes"> Classes</a></li>
+                    <li><a href="/About_us#ContactUs"> Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section opening-hours">
+                <h2>Opening Hours</h2>
+                <p><strong>Monday - Friday</strong></p>
+                <p>8.00 AM - 8.00 PM</p>
+                <p><strong>Saturday - Sunday</strong></p>
+                <p>2.00 PM - 8.00 PM</p>
+            </div>
+            <div class="footer-section contact-us">
+                <h2>Contact Us</h2>
+                <p><i class="fas fa-map-marker-alt"></i> No:128, Malwatte Avenue, Colombo 10</p>
+                <p><i class="fas fa-phone"></i> +94 77 045 6514 </p>
+                <p><i class="fas fa-fax"></i> +94 76 453 1877 </p>
+                <p><i class="fas fa-envelope"></i> Smart Fitness@yahoo.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025. Smart Fitness.com</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

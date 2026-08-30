@@ -1,0 +1,449 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0c0f18;
+    color: white;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 30px;
+    background-color: #050505;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.main-header {
+    background-color: #1a1a1a;
+}
+
+.benefits-header {
+    background-color: #fefcdd;
+    color: #181616;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+header .logo img {
+    height: 60px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+header .logo img:hover {
+    transform: scale(1.1);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+nav ul li a {
+    color: #ff2600;
+    text-decoration: none;
+    font-weight: 600;
+    position: relative;
+}
+
+nav ul li a::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #0433ff;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.3s ease-in-out 0s;
+}
+
+nav ul li a:hover::before {
+    visibility: visible;
+    transform: scaleX(1);
+}
+
+nav ul li a:hover {
+    color: #0433ff;
+}
+
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(to bottom right, rgba(250, 204, 21, 0.05), transparent);
+    padding: 150px 20px 80px;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: rgb(230, 15, 15, 0.1);
+    color: #facc15;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #aaa;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Membership Plans Section */
+#membership-plans {
+    padding: 50px 20px;
+}
+#membership-plans {
+    padding: 50px 20px;
+    background: url('memplanBG1.jpg') no-repeat center center/cover;
+    position: relative;
+}
+
+/* Plans Container */
+.plans-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* Individual Plan Cards */
+.plan {
+    background: #1a1f2e;
+    padding: 30px 20px;
+    border-radius: 10px;
+    width: 280px; /* Consistent card width */
+    text-align: center;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+    box-shadow: 0 5px 15px rgba(255, 255, 0, 0.1);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Hover Effect (Popup Animation) */
+.plan:hover {
+    transform: scale(1.15);
+    box-shadow: 0 15px 40px rgb(217, 88, 74, 0.7);
+    border-color: #df6e49;
+    z-index: 10; /* Ensures the hovered card appears above others */
+}
+
+/* Highlighted Plan */
+.highlighted {
+    border: 1px solid #0a8cf0;
+    box-shadow: 0 5px 20px rgba(255, 255, 0, 0.5);
+    animation: floatEffect 3s infinite ease-in-out;
+}
+
+/* Popular Badge */
+.popular-badge {
+    position: absolute;
+    top: 15px;
+    right: -30px;
+    background: #ed0707;
+    color: black;
+    transform: rotate(45deg);
+    padding: 5px 30px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Plan Titles */
+.plan h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+/* Price */
+.price {
+    font-size: 32px;
+    color: #facc15;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.description {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* Features List */
+.plan ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    text-align: left;
+}
+
+.plan ul li {
+    font-size: 16px;
+    margin: 10px 0;
+    padding-left: 25px;
+    position: relative;
+}
+
+.plan ul li::before {
+    content: '✔';
+    color: limegreen;
+    position: absolute;
+    left: 0;
+}
+
+.plan ul li.negative::before {
+    content: '✖';
+    color: red;
+}
+
+/* Join Button */
+.join-btn {
+    display: inline-block;
+    background: #f25a07;
+    color: black;
+    padding: 12px 30px;
+    border-radius: 2px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: all 0.3s;
+}
+
+.join-btn:hover {
+    background: #e6e935;
+    transform: scale(1.1);
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 80px 20px;
+    background: linear-gradient(to top left, rgba(250, 204, 21, 0.1), transparent);
+}
+
+.cta-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #1a1f2e;
+    border: 1px solid #2a2f3e;
+    border-radius: 20px;
+}
+
+
+.cta-container h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.cta-container p {
+    color: #aaa;
+    margin-bottom: 30px;
+    font-size: 18px;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.cta-btn {
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.cta-btn.primary {
+    background: #eefe10;
+    color: black;
+}
+
+.cta-btn.secondary {
+    background: #2a2f3e;
+    color: white;
+    border: 1px solid #3a3f4e;
+}
+
+.cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #000000;
+    color: #fff;
+    padding: 40px 20px;
+    text-align: left;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 2500px;
+    margin: 0 auto;
+}
+
+.footer-section {
+    width: 23%;
+    margin-bottom: 20px;
+}
+
+.about-us p {
+    line-height: 1.6;
+    color: #ccc;
+}
+
+.footer-logo {
+    max-width: 20px; /* Adjusted logo size */
+    margin-bottom: 10px;
+}
+
+.footer-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.footer-section p,
+.footer-section ul li a {
+    color: #ccc;
+    text-decoration: none;
+    margin-bottom: 10px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li a::before {
+    content: ">";
+    margin-right: 5px;
+}
+
+.social-icons {
+    margin-top: 20px;
+}
+
+.social-icons a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ffffff;
+    border-radius: 50%;
+    margin-right: 10px;
+    color: #ffffff;
+    opacity: 1.0;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+
+.social-icons a:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #ffffff;
+    margin-top: 40px;
+    width: 100%;
+}
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 30px;
+    background-color: #050505;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Animations */
+@keyframes floatEffect {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-header {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    nav ul {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    nav ul li {
+        margin: 5px 10px;
+    }
+
+    .hero {
+        padding-top: 180px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .plan:hover {
+        transform: scale(1.05);
+    }
+
+    .footer-section {
+        min-width: 100%;
+        text-align: center;
+    }
+}

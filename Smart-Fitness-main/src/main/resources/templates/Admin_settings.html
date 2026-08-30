@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fitness - Settings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #1a1c2e, #14162a);
+            color: #fff;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .scale-hover:hover {
+            transform: scale(1.03);
+            transition: transform 0.3s ease;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .animate-slide-up {
+            animation: slideUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        .toggle-switch input:checked + .toggle-slider {
+            background: linear-gradient(to right, #8b5cf6, #6366f1);
+        }
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .section-indicator {
+            width: 4px;
+            height: 40px;
+            border-radius: 999px;
+        }
+        .section-indicator.blue {
+            background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+        }
+        .section-indicator.red {
+            background: linear-gradient(to bottom, #ef4444, #f59e0b);
+        }
+        .section-indicator.green {
+            background: linear-gradient(to bottom, #10b981, #14b8a6);
+        }
+        .profile-picture {
+            position: relative;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(to bottom right, #8b5cf6, #6366f1);
+        }
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #18192b;
+        }
+        .profile-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .save-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(to right, #8b5cf6, #6366f1);
+            color: white;
+            border: none;
+            border-radius: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            transition: all 0.2s ease;
+        }
+        .save-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #10b981;
+            color: black;
+            padding: 0.75rem 1.5rem;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        @media (max-width: 1024px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0 !important;
+                padding-top: 5rem !important;
+            }
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem !important;
+            }
+            .save-button {
+                right: 1rem;
+                bottom: 1rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-poppins">
+<div class="flex min-h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="hidden lg:flex flex-col w-64 h-screen glass-effect flex-shrink-0">
+        <div class="p-6">
+            <a href="/admin/dashboard" class="flex items-center gap-3">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-2.5 rounded-lg">
+                    <i class="fas fa-dumbbell text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+            </a>
+        </div>
+        <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+            <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-tachometer-alt w-4 text-center"></i><span class="font-medium">Dashboard</span>
+            </a>
+            <a href="/admin/admin/profile" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-id-card w-4 text-center"></i><span class="font-medium">Profile</span>
+            </a>
+            <a href="/admin/admin/members" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-users w-4 text-center"></i><span class="font-medium">Members</span>
+            </a>
+            <a href="/admin/instructors" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-chalkboard-teacher w-4 text-center"></i><span class="font-medium">Instructors</span>
+            </a>
+            <a href="/admin/classes" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-calendar-alt w-4 text-center"></i><span class="font-medium">Classes</span>
+            </a>
+            <a href="/admin/equipment" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-dumbbell w-4 text-center"></i><span class="font-medium">Equipment</span>
+            </a>
+            <a href="/admin/supplements/add" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-pills w-4 text-center"></i><span class="font-medium">Supplements</span>
+            </a>
+            <a href="/admin/membership-plans" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-tags w-4 text-center"></i><span class="font-medium">Membership Plans</span>
+            </a>
+            <a href="/admin/payment-history" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-history w-4 text-center"></i><span class="font-medium">Payment History</span>
+            </a>
+            <a href="/admin/announcements" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-bullhorn w-4 text-center"></i><span class="font-medium">Announcements</span>
+            </a>
+            <a href="/admin/settings" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white transition-all duration-300">
+                <i class="fas fa-cog w-4 text-center"></i><span class="font-medium">Settings</span>
+            </a>
+        </nav>
+        <div class="p-4 border-t border-white/10">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="h-10 w-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-user-shield text-sm text-white"></i>
+                </div>
+                <div class="min-w-0">
+                    <h3 class="font-medium truncate" th:text="${admin != null ? admin.name : 'Admin'}">Admin</h3>
+                    <p class="text-xs text-gray-400">Administrator</p>
+                </div>
+            </div>
+            <a href="/logout">
+                <button class="w-full mt-2 bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i><span>Log Out</span>
+                </button>
+            </a>
+        </div>
+    </aside>
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto py-8 px-4 lg:px-12 main-content" style="margin-left: 16rem;">
+        <div class="max-w-4xl mx-auto">
+            <header class="mb-8 animate-fade-in">
+                <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Settings</h1>
+                <p class="text-gray-400 mt-2">Manage your app preferences and account settings</p>
+            </header>
+            <!-- Settings Navigation -->
+            <nav class="glass-effect flex gap-2 mb-8 px-2 py-2 overflow-x-auto animate-fade-in">
+                <a href="#account" class="px-4 py-2 rounded-lg text-sm font-medium text-purple-300 bg-white/10 hover:bg-purple-600/20 transition-all nav-link active">Account</a>
+                <a href="#notifications" class="px-4 py-2 rounded-lg text-sm font-medium text-purple-300 bg-white/10 hover:bg-purple-600/20 transition-all nav-link">Notifications</a>
+                <a href="#privacy" class="px-4 py-2 rounded-lg text-sm font-medium text-purple-300 bg-white/10 hover:bg-purple-600/20 transition-all nav-link">Privacy & Security</a>
+            </nav>
+            <!-- Account Settings -->
+            <section id="account" class="mb-10 animate-slide-up settings-section">
+                <div class="glass-effect rounded-xl p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="section-indicator blue"></div>
+                        <h2 class="text-xl font-semibold">Account Settings</h2>
+                    </div>
+                    <div class="space-y-8">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Profile Picture</h3>
+                                <p class="text-gray-400 text-sm">Update your profile picture</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="profile-picture">
+                                    <img src="/images/Sayura.jpg" alt="Profile" class="profile-image">
+                                    <div class="profile-edit">
+                                        <i class="fas fa-camera text-xs"></i>
+                                    </div>
+                                </div>
+                                <button class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium">Change</button>
+                                <button class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium">Remove</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Full Name</h3>
+                                <p class="text-gray-400 text-sm">Update your display name</p>
+                            </div>
+                            <input type="text" class="w-full md:w-80 bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" value="Syaura Thejan">
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Email Address</h3>
+                                <p class="text-gray-400 text-sm">Update your email address</p>
+                            </div>
+                            <input type="email" class="w-full md:w-80 bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" value="admin@user.com">
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Password</h3>
+                                <p class="text-gray-400 text-sm">Change your password</p>
+                            </div>
+                            <button class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium">Change Password</button>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Two-Factor Authentication</h3>
+                                <p class="text-gray-400 text-sm">Add an extra layer of security</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Notification Settings -->
+            <section id="notifications" class="mb-10 animate-slide-up settings-section">
+                <div class="glass-effect rounded-xl p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="section-indicator red"></div>
+                        <h2 class="text-xl font-semibold">Notification Settings</h2>
+                    </div>
+                    <div class="space-y-8">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Push Notifications</h3>
+                                <p class="text-gray-400 text-sm">Receive push notifications</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Email Notifications</h3>
+                                <p class="text-gray-400 text-sm">Receive email notifications</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Workout Reminders</h3>
+                                <p class="text-gray-400 text-sm">Get reminded about scheduled workouts</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Progress Updates</h3>
+                                <p class="text-gray-400 text-sm">Get regular updates on your progress</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Privacy & Security -->
+            <section id="privacy" class="mb-10 animate-slide-up settings-section">
+                <div class="glass-effect rounded-xl p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="section-indicator green"></div>
+                        <h2 class="text-xl font-semibold">Privacy & Security</h2>
+                    </div>
+                    <div class="space-y-8">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Activity Visibility</h3>
+                                <p class="text-gray-400 text-sm">Control who can see your activity</p>
+                            </div>
+                            <select class="w-full md:w-80 bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors">
+                                <option value="public">Public</option>
+                                <option value="friends-only" selected>Friends Only</option>
+                                <option value="private">Private</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Data Sharing</h3>
+                                <p class="text-gray-400 text-sm">Share workout data with third-party apps</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                            <div>
+                                <h3 class="font-medium">Download Your Data</h3>
+                                <p class="text-gray-400 text-sm">Get a copy of all your data</p>
+                            </div>
+                            <button class="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium">Download</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+<!-- Save Button -->
+<button class="save-button" id="saveButton">Save Changes</button>
+<!-- Toast Notification -->
+<div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span>Settings saved successfully!</span>
+</div>
+<script>
+    // Save button functionality
+    const saveButton = document.getElementById('saveButton');
+    const toast = document.getElementById('toast');
+    saveButton.addEventListener('click', function() {
+        toast.classList.add('show');
+        setTimeout(function() {
+            toast.classList.remove('show');
+        }, 3000);
+    });
+
+    // Smooth scroll for navigation links
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            navLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Highlight nav links on scroll
+    window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY;
+        document.querySelectorAll('.settings-section').forEach(section => {
+            const sectionTop = section.offsetTop - 100;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + sectionId) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

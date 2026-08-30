@@ -1,0 +1,101 @@
+<!-- admin_logout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fitness - Logout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #1a1c2e, #14162a);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.4s ease-out forwards;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container mx-auto px-4">
+    <div class="max-w-md mx-auto animate-scale-in glass-effect rounded-2xl overflow-hidden">
+        <div class="p-8">
+            <div class="flex flex-col items-center justify-center mb-8">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-3 rounded-xl mb-4">
+                    <i class="fas fa-dumbbell text-white text-2xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+            </div>
+
+            <div class="text-center mb-8">
+                <div class="bg-white/5 rounded-full h-20 w-20 mx-auto flex items-center justify-center mb-4">
+                    <i class="fas fa-sign-out-alt text-3xl text-gray-300"></i>
+                </div>
+                <h2 class="text-2xl font-semibold mb-2">Log Out</h2>
+                <p class="text-gray-400">Are you sure you want to log out of your account?</p>
+            </div>
+
+            <div class="space-y-3">
+                <a href="index.html">
+                    <button class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl hover:opacity-90 transition-all font-medium">
+                        Yes, Log Me Out
+                    </button>
+                </a>
+
+                <a href="member_dashboard.html">
+                    <button class="w-full py-3 bg-white/10 hover:bg-white/20 rounded-xl transition-all font-medium">
+                        Cancel
+                    </button>
+                </a>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-white/10 text-center">
+                <p class="text-sm text-gray-400">Stay logged in to track your fitness progress and<br/>receive personalized workout recommendations.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-6 text-center animate-fade-in">
+        <a href="member_dashboard.html" class="text-gray-400 hover:text-white text-sm flex items-center justify-center gap-2 transition-colors">
+            <i class="fas fa-arrow-left"></i>
+            <span>Return to Dashboard</span>
+        </a>
+    </div>
+</div>
+</body>
+</html>

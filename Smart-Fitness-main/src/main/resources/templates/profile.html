@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fitness - Profile Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #1a1c2e, #14162a);
+            color: #fff;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+        }
+
+        .scale-hover:hover {
+            transform: scale(1.02);
+            transition: transform 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* File upload styling */
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside class="hidden lg:flex flex-col w-64 h-screen glass-effect flex-shrink-0">
+        <div class="p-6">
+            <a href="/user/dashboard" class="flex items-center gap-3">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-2.5 rounded-lg">
+                    <i class="fas fa-dumbbell text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+            </a>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+            <a href="/user/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-th-large w-4 text-center"></i>
+                <span class="font-medium">Dashboard</span>
+            </a>
+            <a href="/user/profile" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white transition-all duration-300">
+                <i class="fas fa-user w-4 text-center"></i>
+                <span class="font-medium">Profile</span>
+            </a>
+            <a href="/user/schedule" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-calendar w-4 text-center"></i>
+                <span class="font-medium">Schedule</span>
+            </a>
+            <a href="/exercises" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-dumbbell w-4 text-center"></i>
+                <span class="font-medium">Exercises</span>
+            </a>
+            <a href="/monthprogress" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-chart-line w-4 text-center"></i>
+                <span class="font-medium">Progress</span>
+            </a>
+            <a href="/diet-plan" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-apple-alt w-4 text-center"></i>
+                <span class="font-medium">Diet Plan</span>
+            </a>
+            <a href="/user/announcements" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-bullhorn w-4 text-center"></i>
+                <span class="font-medium">Announcements</span>
+            </a>
+            <a href="/user/settings" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-cog w-4 text-center"></i>
+                <span class="font-medium">Settings</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-white/10">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="h-10 w-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-user text-sm text-white"></i>
+                </div>
+                <div class="min-w-0">
+                    <h3 class="font-medium truncate" th:text="${user != null ? user.name : 'User'}">User</h3>
+                </div>
+            </div>
+            <a href="/logout">
+                <button class="w-full mt-2 bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log Out</span>
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed w-full flex items-center justify-between p-4 glass-effect z-50">
+        <a href="#" class="flex items-center gap-2">
+            <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-1.5 rounded-lg">
+                <i class="fas fa-dumbbell text-white"></i>
+            </div>
+            <h1 class="text-lg font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+        </a>
+
+        <div class="flex items-center gap-4">
+            <div class="relative">
+                <i class="fas fa-bell text-gray-300"></i>
+                <span class="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs">3</span>
+            </div>
+            <button aria-label="Toggle menu" class="p-1.5 rounded-lg bg-white/10">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto py-4 lg:py-6 px-4 lg:px-8 lg:pt-0 mt-16 lg:mt-0">
+        <div class="max-w-5xl mx-auto">
+            <!-- Header Section -->
+            <header class="mb-6 animate-slide-up" style="animation-delay: 0.1s;">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">My Profile</h1>
+                    <button id="editProfileBtn" class="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:opacity-90 transition-all">
+                        <i class="fas fa-edit mr-2"></i>Edit Profile
+                    </button>
+                </div>
+                <p class="text-gray-400 mt-2">Personal information </p>
+            </header>
+
+            <!-- Profile Content -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Left Side - Profile Summary -->
+                <div class="md:col-span-1 space-y-6">
+                    <div class="glass-effect rounded-xl p-6 animate-slide-up" style="animation-delay: 0.2s;">
+                        <div class="flex flex-col items-center">
+                            <div class="relative mb-4 group">
+                                <div class="h-32 w-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-1">
+                                    <div class="h-full w-full rounded-full overflow-hidden border-2 border-white">
+                                        <img id="profileImage" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="h-full w-full object-cover" />
+                                    </div>
+                                </div>
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <div class="file-upload">
+                                        <button class="p-2 rounded-full bg-black/50 text-white">
+                                            <i class="fas fa-camera"></i>
+                                        </button>
+                                        <input type="file" id="profilePictureInput" accept="image/*" onchange="updateProfilePicture()" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h2 class="text-xl font-semibold" th:text="${user.name}">User Name</h2>
+                            <p class="text-sm text-gray-400" th:text="${user.branch}">Branch</p>
+
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-white/10">
+                        <div class="glass-effect rounded-xl p-4 mb-3">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-crown text-yellow-500"></i>
+                                <span class="text-sm font-medium text-gray-300">Current Plan</span>
+                            </div>
+                            <p class="text-lg font-semibold" id="currentPlanName" th:text="${user.currentPlanName != null ? user.currentPlanName : 'No Plan'}">No Plan</p>
+                            <a href="/UserPlans" class="inline-block mt-2 text-sm text-purple-400 hover:text-purple-300 transition-all">
+                                <i class="fas fa-exchange-alt mr-1"></i>
+                                <span th:text="${user.currentPlanId != null ? 'Change Plan' : 'Subscribe Now'}">Subscribe Now</span>
+                            </a>
+                        </div>
+                        <a href="/UserPlans" class="w-full px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm transition-all">
+                            <i class="fas fa-crown text-yellow-500 mr-2"></i>
+                            Membership Manage Subscription
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Side - Profile Details -->
+                <div class="md:col-span-2 space-y-6">
+                    <!-- View Mode Content -->
+                    <div id="viewProfileMode" class="space-y-6">
+                        <div class="glass-effect rounded-xl p-6 animate-slide-up" style="animation-delay: 0.2s;">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-10 w-1 rounded-full"></div>
+                                <h2 class="text-xl font-semibold">Personal Information</h2>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <p class="text-sm text-gray-400">Full Name</p>
+                                    <p class="text-base bg-white/5 rounded-lg p-3" th:text="${user.name}">Full Name</p>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <p class="text-sm text-gray-400">Email Address</p>
+                                    <p class="text-base bg-white/5 rounded-lg p-3" th:text="${user.email}">Email</p>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <p class="text-sm text-gray-400">Phone Number</p>
+                                    <p class="text-base bg-white/5 rounded-lg p-3">+94 76 453 1877</p>
+                                </div>
+
+                                <div class="space-y-2">
+                                    <p class="text-sm text-gray-400">Gender</p>
+                                    <p class="text-base bg-white/5 rounded-lg p-3">Male</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Edit Mode Content -->
+                    <div id="editProfileMode" class="space-y-6 hidden">
+                        <form id="profileEditForm">
+                            <div class="glass-effect rounded-xl p-6 animate-slide-up" style="animation-delay: 0.2s;">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-10 w-1 rounded-full"></div>
+                                    <h2 class="text-xl font-semibold">Personal Information</h2>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400">Full Name</label>
+                                        <input type="text" value="Soeash Nisheda" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400">Email Address</label>
+                                        <input type="email" value="nishedas@gmail.com" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400">Phone Number</label>
+                                        <input type="tel" value="+94 76 453 1877" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400">Date of Birth</label>
+                                        <input type="date" value="May 15, 2004" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <label class="text-sm text-gray-400">Gender</label>
+                                        <select class="w-full bg-white/5 border border-white/10 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                            <option value="male" selected>Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="glass-effect rounded-xl p-6 animate-slide-up" style="animation-delay: 0.4s;">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="bg-gradient-to-r from-red-500 to-orange-500 h-10 w-1 rounded-full"></div>
+                                    <div class="flex justify-end gap-4 mt-6">
+                                        <button type="button" id="cancelEditBtn" class="px-6 py-2.5 bg-white/10 hover:bg-white/20 rounded-xl transition-all">
+                                            Cancel
+                                        </button>
+                                        <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl hover:opacity-90 transition-all">
+                                            Save Changes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- JavaScript for Profile Picture Upload and Form Toggle -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle between view and edit modes
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const viewProfileMode = document.getElementById('viewProfileMode');
+        const editProfileMode = document.getElementById('editProfileMode');
+        const profileEditForm = document.getElementById('profileEditForm');
+
+        editProfileBtn.addEventListener('click', function() {
+            viewProfileMode.classList.add('hidden');
+            editProfileMode.classList.remove('hidden');
+        });
+
+        cancelEditBtn.addEventListener('click', function() {
+            viewProfileMode.classList.remove('hidden');
+            editProfileMode.classList.add('hidden');
+        });
+
+        profileEditForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Here you would normally process the form data and update the profile
+            // For demo purposes, we'll just toggle back to view mode with an alert
+            alert('Profile updated successfully!');
+
+            viewProfileMode.classList.remove('hidden');
+            editProfileMode.classList.add('hidden');
+        });
+
+        // Mobile menu toggle
+        const menuButton = document.querySelector('button[aria-label="Toggle menu"]');
+        if (menuButton) {
+            menuButton.addEventListener('click', function() {
+                console.log('Menu toggled');
+                // In a real implementation, show mobile menu
+            });
+        }
+
+        // Add animation effect
+        const elementsToAnimate = document.querySelectorAll('.animate-slide-up');
+        elementsToAnimate.forEach(element => {
+            setTimeout(() => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, parseFloat(element.style.animationDelay || '0') * 1000);
+        });
+
+        // Subtle hover effects on cards
+        const cards = document.querySelectorAll('.glass-effect');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                card.style.boxShadow = '0 10px 30px -15px rgba(0, 0, 255, 0.15)';
+                card.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+                card.style.transition = 'all 0.3s ease';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                card.style.boxShadow = 'none';
+                card.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            });
+        });
+    });
+
+    // Function to update profile picture when a file is selected
+    function updateProfilePicture() {
+        const input = document.getElementById('profilePictureInput');
+        const image = document.getElementById('profileImage');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                image.src = e.target.result;
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+</body>
+</html>

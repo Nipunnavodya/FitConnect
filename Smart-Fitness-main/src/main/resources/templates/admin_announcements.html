@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fitness - Announcements</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(to bottom right, #1a1c2e, #14162a); color: #fff; }
+        .glass-effect { background: rgba(255,255,255,0.06); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 50; display: flex; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+<div class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="hidden lg:flex flex-col w-64 h-screen glass-effect flex-shrink-0">
+        <div class="p-6">
+            <a href="/admin/dashboard" class="flex items-center gap-3">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-2.5 rounded-lg">
+                    <i class="fas fa-dumbbell text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+            </a>
+        </div>
+        <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+            <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-tachometer-alt w-4 text-center"></i><span class="font-medium">Dashboard</span>
+            </a>
+            <a href="/admin/admin/profile" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-id-card w-4 text-center"></i><span class="font-medium">Profile</span>
+            </a>
+            <a href="/admin/admin/members" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-users w-4 text-center"></i><span class="font-medium">Members</span>
+            </a>
+            <a href="/admin/instructors" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-chalkboard-teacher w-4 text-center"></i><span class="font-medium">Instructors</span>
+            </a>
+            <a href="/admin/classes" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-calendar-alt w-4 text-center"></i><span class="font-medium">Classes</span>
+            </a>
+            <a href="/admin/equipment" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-dumbbell w-4 text-center"></i><span class="font-medium">Equipment</span>
+            </a>
+            <a href="/admin/supplements/add" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-pills w-4 text-center"></i><span class="font-medium">Supplements</span>
+            </a>
+            <a href="/admin/membership-plans" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-tags w-4 text-center"></i><span class="font-medium">Membership Plans</span>
+            </a>
+            <a href="/admin/payment-history" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-history w-4 text-center"></i><span class="font-medium">Payment History</span>
+            </a>
+            <a href="/admin/announcements" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white transition-all duration-300">
+                <i class="fas fa-bullhorn w-4 text-center"></i><span class="font-medium">Announcements</span>
+            </a>
+            <a href="/admin/settings" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-cog w-4 text-center"></i><span class="font-medium">Settings</span>
+            </a>
+        </nav>
+        <div class="p-4 border-t border-white/10">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="h-10 w-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-user-shield text-sm text-white"></i>
+                </div>
+                <div class="min-w-0">
+                    <h3 class="font-medium truncate" th:text="${admin != null ? admin.name : 'Admin'}">Admin</h3>
+                    <p class="text-xs text-gray-400">Administrator</p>
+                </div>
+            </div>
+            <a href="/logout">
+                <button class="w-full mt-2 bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i><span>Log Out</span>
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto py-6 px-8">
+        <div class="max-w-5xl mx-auto">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Announcements</h1>
+                    <p class="text-gray-400 mt-1">Manage gym-wide announcements for members</p>
+                </div>
+                <button onclick="document.getElementById('addModal').classList.remove('hidden')"
+                        class="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl hover:opacity-90 transition-all">
+                    <i class="fas fa-plus"></i><span>New Announcement</span>
+                </button>
+            </div>
+
+            <!-- Announcements Table -->
+            <div class="glass-effect p-6">
+                <div th:if="${announcements != null and !#lists.isEmpty(announcements)}" class="space-y-4">
+                    <div th:each="a : ${announcements}"
+                         class="bg-white/5 rounded-xl p-5 border border-white/10 hover:bg-white/10 transition-all">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-3 mb-1">
+                                    <h3 class="font-semibold text-lg" th:text="${a.title}">Title</h3>
+                                    <span th:if="${a.active}"
+                                          class="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-xs font-medium">Active</span>
+                                    <span th:unless="${a.active}"
+                                          class="px-2 py-0.5 rounded-full bg-gray-500/20 text-gray-400 text-xs font-medium">Hidden</span>
+                                </div>
+                                <p class="text-gray-300 text-sm mb-2" th:text="${a.content}">Content</p>
+                                <p class="text-xs text-gray-500">
+                                    Posted by <span th:text="${a.postedBy}">Admin</span>
+                                    &bull;
+                                    <span th:text="${#temporals.format(a.createdAt, 'MMM dd, yyyy HH:mm')}">Date</span>
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                <!-- Toggle button -->
+                                <button th:if="${a.active}"
+                                        th:onclick="'toggleAnnouncement(' + ${a.id} + ', false)'"
+                                        class="px-3 py-1.5 text-xs bg-yellow-500/20 text-yellow-400 rounded-lg hover:bg-yellow-500/30 transition-all">
+                                    <i class="fas fa-eye-slash mr-1"></i>Hide
+                                </button>
+                                <button th:unless="${a.active}"
+                                        th:onclick="'toggleAnnouncement(' + ${a.id} + ', true)'"
+                                        class="px-3 py-1.5 text-xs bg-green-500/20 text-green-400 rounded-lg hover:bg-green-500/30 transition-all">
+                                    <i class="fas fa-eye mr-1"></i>Show
+                                </button>
+                                <button th:onclick="'deleteAnnouncement(' + ${a.id} + ')'"
+                                        class="px-3 py-1.5 text-xs bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-all">
+                                    <i class="fas fa-trash mr-1"></i>Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${announcements == null or #lists.isEmpty(announcements)}"
+                     class="text-center py-16 text-gray-500">
+                    <i class="fas fa-bullhorn text-4xl mb-4 opacity-30"></i>
+                    <p>No announcements yet. Create one to notify your members.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Add Announcement Modal -->
+<div id="addModal" class="hidden modal-overlay">
+    <div class="glass-effect w-full max-w-lg mx-4 p-6">
+        <div class="flex items-center justify-between mb-5">
+            <h2 class="text-xl font-semibold">New Announcement</h2>
+            <button onclick="document.getElementById('addModal').classList.add('hidden')" class="text-gray-400 hover:text-white">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <form id="addAnnouncementForm" class="space-y-4">
+            <div>
+                <label class="block text-sm text-gray-400 mb-1">Title</label>
+                <input type="text" id="addTitle" required
+                       class="w-full bg-white/5 border border-white/10 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                       placeholder="Announcement title">
+            </div>
+            <div>
+                <label class="block text-sm text-gray-400 mb-1">Content</label>
+                <textarea id="addContent" required rows="4"
+                          class="w-full bg-white/5 border border-white/10 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                          placeholder="Write your announcement here..."></textarea>
+            </div>
+            <div id="addError" class="hidden text-red-400 text-sm"></div>
+            <div class="flex gap-3 justify-end pt-2">
+                <button type="button" onclick="document.getElementById('addModal').classList.add('hidden')"
+                        class="px-5 py-2.5 bg-white/10 hover:bg-white/20 rounded-xl transition-all">Cancel</button>
+                <button type="submit"
+                        class="px-5 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl hover:opacity-90 transition-all">
+                    Post Announcement
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('addAnnouncementForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const title = document.getElementById('addTitle').value.trim();
+        const content = document.getElementById('addContent').value.trim();
+        const errEl = document.getElementById('addError');
+        errEl.classList.add('hidden');
+        try {
+            const res = await fetch('/admin/announcements/add', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: new URLSearchParams({title, content})
+            });
+            const data = await res.json();
+            if (data.success) {
+                location.reload();
+            } else {
+                errEl.textContent = data.message || 'Failed to post announcement.';
+                errEl.classList.remove('hidden');
+            }
+        } catch (err) {
+            errEl.textContent = 'Network error. Please try again.';
+            errEl.classList.remove('hidden');
+        }
+    });
+
+    async function deleteAnnouncement(id) {
+        if (!confirm('Delete this announcement?')) return;
+        const res = await fetch('/admin/announcements/delete/' + id, {method: 'POST'});
+        const data = await res.json();
+        if (data.success) location.reload();
+        else alert('Error: ' + data.message);
+    }
+
+    async function toggleAnnouncement(id, active) {
+        const res = await fetch('/admin/announcements/toggle/' + id, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: new URLSearchParams({active: active.toString()})
+        });
+        const data = await res.json();
+        if (data.success) location.reload();
+        else alert('Error: ' + data.message);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="about.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+           margin: 0;
+           padding: 0;
+           box-sizing: border-box;
+       }
+
+       body {
+           font-family: Arial, sans-serif;
+           background-color: #0c0f18;
+
+           margin: 0;
+           padding: 0;
+           text-align: center;
+       }
+
+       /* Header Styles */
+       header {
+           display: flex;
+           align-items: center;
+           justify-content: space-between;
+           padding: 20px 30px;
+           background-color: #050505;
+           color: white;
+           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+       }
+
+       .main-header {
+           background-color: #1a1a1a;
+       }
+
+       .benefits-header {
+           background-color: #fefcdd;
+           color: #181616;
+           text-align: center;
+           padding: 30px 20px;
+       }
+
+       header .logo img {
+           height: 60px;
+           width: auto;
+           transition: transform 0.3s ease;
+       }
+
+       header .logo img:hover {
+           transform: scale(1.1);
+       }
+
+       nav ul {
+           list-style: none;
+           display: flex;
+           gap: 30px;
+       }
+
+       nav ul li a {
+           color: #ff2600;
+           text-decoration: none;
+           font-weight: 600;
+           position: relative;
+       }
+
+       nav ul li a::before {
+           content: '';
+           position: absolute;
+           width: 100%;
+           height: 2px;
+           bottom: -5px;
+           left: 0;
+           background-color: #0433ff;
+           visibility: hidden;
+           transform: scaleX(0);
+           transition: all 0.3s ease-in-out 0s;
+       }
+
+       nav ul li a:hover::before {
+           visibility: visible;
+           transform: scaleX(1);
+       }
+
+       nav ul li a:hover {
+           color: #0433ff;
+       }
+       /* Footer Styles */
+        .footer {
+            background-color: #000000;
+            color: #fff;
+            padding: 40px 20px;
+            text-align: left;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 2500px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            width: 23%;
+            margin-bottom: 20px;
+        }
+
+        .about-us p {
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .footer-logo {
+            max-width: 20px; /* Adjusted logo size */
+            margin-bottom: 10px;
+        }
+
+        .footer-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .footer-section p,
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li a::before {
+            content: ">";
+            margin-right: 5px;
+        }
+
+        .social-icons {
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ffffff;
+            border-radius: 50%;
+            margin-right: 10px;
+            color: #ffffff;
+            opacity: 1.0;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+
+        .social-icons a:hover {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #ffffff;
+            margin-top: 40px;
+            width: 100%;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background-color: #050505;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animations */
+        @keyframes floatEffect {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Hero section */
+        .about-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .about-hero-content h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: 900;
+        }
+
+        .about-hero-content p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Our Story section */
+        .about-story {
+            padding: 50px 0;
+            background-color: white;
+        }
+
+        .about-story h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        /* Timeline section */
+        .milestone-timeline {
+            padding: 50px 0;
+            background-color: #f5f5f5;
+        }
+
+        .milestone-timeline h2 {
+            font-size: 28px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            padding: 20px 30px;
+            position: relative;
+            background-color: white;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .timeline-item.animated {
+            transform: translateY(0);
+        }
+
+        .timeline-year {
+            font-weight: bold;
+            color: #ff0000;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Core Values */
+        .core-values {
+            padding: 50px 0;
+            background-color: #f5f5f5;
+        }
+
+        .core-values h2 {
+            font-size: 28px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .values-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .value {
+            background-color: white;
+            padding: 25px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        .value i {
+            color: #ff0000;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .value h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        /* Facilities Section */
+        .facilities {
+            padding: 50px 0;
+            background-color: white;
+        }
+
+        .facilities h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .section-intro {
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        .facilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .facility {
+            background-color: #f5f5f5;
+            padding: 25px;
+            border-radius: 5px;
+        }
+
+        .facility i {
+            color: #ff0000;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .facility h3 {
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        /* Gym Staff Section */
+        .gym-staff {
+            padding: 50px 0;
+            background-color: #f5f5f5;
+        }
+
+        .gym-staff h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .staff-member {
+            background-color: white;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .staff-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .staff-member img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .staff-member h3 {
+            padding: 15px 20px 5px;
+            font-size: 20px;
+        }
+
+        .staff-member .role {
+            color: #ff0000;
+            font-weight: bold;
+            padding: 0 20px;
+        }
+
+        .staff-member .bio {
+            padding: 10px 20px 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 50px 0;
+            background-color: white;
+        }
+
+        .testimonials h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .testimonial-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial {
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-text {
+            padding: 20px;
+            position: relative;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #e5e5e5;
+        }
+
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .testimonial-author h4 {
+            margin-bottom: 0;
+        }
+
+        /* Join Team */
+        .join-team {
+            padding: 50px 0;
+            background-color: #f5f5f5;
+        }
+
+        .join-team h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .career-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .benefit {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .benefit i {
+            color: #ff0000;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .benefit h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .career-btn {
+            display: inline-block;
+            background-color: #ff0000;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .career-btn:hover {
+            background-color: #cc0000;
+        }
+
+        /* FAQ */
+         .faq {
+            padding: 50px 0;
+            background-color: white;
+         }
+
+        .faq h2 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .faq-container {
+            max-width: 800px;
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 20px;
+        }
+
+        .faq-item h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .faq-item.active h3 {
+            color: #ff0000;
+        }
+
+        .faq-item p {
+            display: block;
+        }
+
+        .faq-item.active p {
+            display: block;
+        }
+
+        /* Contact Section */
+        .get-in-touch {
+            padding: 50px 0;
+            background-color: #f5f5f5;
+        }
+
+        .get-in-touch h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .contact-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .submit-btn {
+             background-color: #007bff;
+             color: white;
+             border: none;
+             padding: 10px 25px;
+             border-radius: 4px;
+             cursor: pointer;
+             font-weight: bold;
+             transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .contact-method i {
+            color: #ff0000;
+            font-size: 20px;
+            margin-right: 15px;
+            margin-top: 3px;
+        }
+
+        .contact-method h3 {
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+
+        .social-links {
+            margin-top: 10px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background-color: #ff0000;
+            color: white;
+        }
+
+        /* Location Map */
+        .location-map {
+            padding: 50px 0;
+            background-color: white;
+            text-align: center;
+        }
+
+        .location-map h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .map-container {
+            margin: 30px 0;
+        }
+
+        .location-map-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .location-btn {
+            display: inline-block;
+            background-color: #ff0000;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .location-btn:hover {
+            background-color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+<header class="main-header">
+    <div class="logo">
+        <img src="/images/111.png" alt="Smart Fitness Logo" />
+    </div>
+    <nav>
+        <ul>
+            <li><a href="/index">Home</a></li>
+            <li><a href="/memplan" class="active">Membership Plans</a></li>
+            <li><a href="/supplements">Supplements</a></li>
+            <li><a href="/gallery">Gallery</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="#">About Us</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="about-hero">
+    <div class="overlay"></div>
+    <div class="about-hero-content">
+        <h1>About Smart Fitness Gyms</h1>
+        <p>Empowering Sri Lankans to lead healthier, stronger lives since 1995</p>
+    </div>
+</section>
+
+<section class="about-story">
+    <div class="container">
+        <h2>Our Story</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <p>Founded in 1995 by fitness enthusiast Sanith Wijesinghe, Smart Fitness began as a modest 500-square-foot facility in the heart of Colombo with just a handful of equipment and a passionate vision to transform Sri Lanka's fitness landscape.</p>
+
+                <p>In our early years, we faced numerous challenges—limited resources, skepticism about gym culture, and a small but dedicated clientele. However, our commitment to quality, personal attention, and results quickly earned us a reputation as the go-to fitness destination in Colombo.</p>
+
+                <p>By 2005, we had expanded to three locations across the city. The following decade saw explosive growth as we refined our business model, invested in cutting-edge equipment, and built a team of Sri Lanka's most qualified fitness professionals. Today, with more than 20 state-of-the-art facilities nationwide and over 50,000 active members, Smart Fitness stands as Sri Lanka's undisputed leader in fitness.</p>
+
+                <p>Our journey continues to be driven by our founding principle: that fitness should be accessible, enjoyable, and transformative for everyone, regardless of their starting point. As we look to the future, we remain committed to innovation, expansion, and most importantly, to being a catalyst for positive change in the lives of Sri Lankans.</p>
+            </div>
+            <div class="about-image">
+                <img src="/images/BG4.jpg" alt="Smart Fitness Gym" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="milestone-timeline">
+    <div class="container">
+        <h2>Our Journey Through the Years</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1995</div>
+                <div class="timeline-content">
+                    <h3>The Beginning</h3>
+                    <p>First Smart Fitness gym opens in Colombo with basic equipment and 3 staff members</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2000</div>
+                <div class="timeline-content">
+                    <h3>Expansion Begins</h3>
+                    <p>Second location opens in Kandy, introducing professional training programs</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2005</div>
+                <div class="timeline-content">
+                    <h3>Breaking Barriers</h3>
+                    <p>Reached 5 locations nationwide and launched Sri Lanka's first comprehensive fitness training academy</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2010</div>
+                <div class="timeline-content">
+                    <h3>National Recognition</h3>
+                    <p>Named "Fitness Brand of the Year" and expanded to 10 locations</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2015</div>
+                <div class="timeline-content">
+                    <h3>Technology Integration</h3>
+                    <p>Launched Smart Fitness mobile app and digital fitness tracking systems</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2020</div>
+                <div class="timeline-content">
+                    <h3>Innovation During Challenge</h3>
+                    <p>Developed virtual training programs during pandemic, reaching 15 locations</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-year">2025</div>
+                <div class="timeline-content">
+                    <h3>Industry Leaders</h3>
+                    <p>Operating 20+ state-of-the-art facilities with innovative Power Score app and comprehensive wellness programs</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="core-values">
+    <div class="container">
+        <h2>Our Core Values</h2>
+        <div class="values-container">
+            <div class="value">
+                <i class="fas fa-heart"></i>
+                <h3>Passion</h3>
+                <p>We bring energy and enthusiasm to everything we do, inspiring others through our commitment to fitness and health. Our team members live the lifestyle they promote, serving as role models for our members.</p>
+            </div>
+            <div class="value">
+                <i class="fas fa-users"></i>
+                <h3>Community</h3>
+                <p>We create an inclusive environment where everyone feels welcome, supported, and part of the Smart Fitness family. We celebrate diversity and believe that our differences make our community stronger and more vibrant.</p>
+            </div>
+            <div class="value">
+                <i class="fas fa-medal"></i>
+                <h3>Excellence</h3>
+                <p>We strive for the highest standards in our facilities, programs, and customer service, always looking for ways to improve. We refuse to compromise on quality and continuously invest in our people, equipment, and spaces.</p>
+            </div>
+            <div class="value">
+                <i class="fas fa-lightbulb"></i>
+                <h3>Innovation</h3>
+                <p>We constantly evolve, embracing new fitness methodologies and technologies to enhance the member experience. We are not afraid to pioneer new approaches that challenge conventional wisdom in pursuit of better results.</p>
+            </div>
+            <div class="value">
+                <i class="fas fa-handshake"></i>
+                <h3>Integrity</h3>
+                <p>We operate with honesty, transparency, and ethical standards in all aspects of our business. We make decisions based on what's best for our members, not just our bottom line.</p>
+            </div>
+            <div class="value">
+                <i class="fas fa-chart-line"></i>
+                <h3>Results-Driven</h3>
+                <p>We focus on delivering measurable outcomes for our members through evidence-based approaches. We celebrate progress and achievements, understanding that results build motivation and loyalty.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="facilities">
+    <div class="container">
+        <h2>World-Class Facilities</h2>
+        <p class="section-intro">Each Smart Fitness location is meticulously designed to provide the optimal environment for your fitness journey. Our facilities feature:</p>
+
+        <div class="facilities-grid">
+            <div class="facility">
+                <i class="fas fa-dumbbell"></i>
+                <h3>Strength Training Zone</h3>
+                <p>Over 250 different types of free weights and dumbbells, with dedicated power racks, platforms, and specialized strength equipment.</p>
+            </div>
+            <div class="facility">
+                <i class="fas fa-running"></i>
+                <h3>Cardio Arena</h3>
+                <p>More than 100 state-of-the-art cardio machines including treadmills, ellipticals, stair masters, and rowing machines with integrated entertainment systems.</p>
+            </div>
+            <div class="facility">
+                <i class="fas fa-heartbeat"></i>
+                <h3>Functional Training</h3>
+                <p>Dedicated spaces for functional movement patterns with TRX systems, battle ropes, kettlebells, and obstacle-course inspired equipment.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="gym-staff">
+    <div class="container">
+        <h2>Our Dedicated Staff</h2>
+        <p class="section-intro">Meet the professionals who make your fitness journey exceptional every day.</p>
+
+        <div class="staff-grid">
+            <div class="staff-member">
+                <img src="images/Ulindu.jpg" alt="Trainer 1">
+                <h3>Ulindu Vibodha</h3>
+                <p class="role">Senior Personal Trainer</p>
+                <p class="bio">Specializing in strength training and sports performance. Michael has 8 years of experience and holds certifications in exercise science.</p>
+            </div>
+            <div class="staff-member">
+                <img src="images/kenula.jpg" alt="Trainer 2">
+                <h3>Kenula De Silva</h3>
+                <p class="role">Yoga & Pilates Instructor</p>
+                <p class="bio">A certified yoga instructor with expertise in meditation and mindfulness. Samantha brings 10 years of holistic wellness experience.</p>
+            </div>
+            <div class="staff-member">
+                <img src="images/Kaushikesh.png" alt="Trainer 3">
+                <h3>Rajan Perera</h3>
+                <p class="role">Group Fitness Instructor</p>
+                <p class="bio">Energetic instructor leading HIIT, Zumba, and cycling classes. Known for motivating members to push beyond their limits.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials">
+    <div class="container">
+        <h2>What Our Members Say</h2>
+
+        <div class="testimonial-container">
+            <div class="testimonial">
+                <div class="testimonial-text">
+                    <p>"Smart Fitness transformed not just my physique but my entire outlook on health. The trainers here don't just push you; they educate and motivate you to become your best self."</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="/images/oshada.jpg" alt="Priya Mendis">
+                    <div>
+                        <h4>Priya Mendis</h4>
+                        <p>Member since 2018</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial">
+                <div class="testimonial-text">
+                    <p>"As a senior citizen, I was intimidated by gyms. Smart Fitness's specialized program for older adults has improved my balance, strength, and confidence. I feel 20 years younger!"</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="/images/sasidu.jpg" alt="Lakshman Perera">
+                    <div>
+                        <h4>Lakshman Perera</h4>
+                        <p>Member since 2020</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial">
+                <div class="testimonial-text">
+                    <p>"The community at Smart Fitness keeps me coming back. From the friendly staff to the supportive fellow members, it feels less like a gym and more like a second home."</p>
+                </div>
+
+                <div class="testimonial-author">
+                    <img src="/images/yasoda.jpg" alt="Fathima Hussain">
+                    <div>
+                        <br>
+                        <h4>Fathima Hussain</h4>
+                        <p>Member since 2019</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="join-team">
+    <div class="container">
+        <h2>Join Our Team</h2>
+        <p>Passionate about fitness? Looking to build a career in an exciting, growing industry? Smart Fitness is always seeking talented individuals to join our team of professionals.</p>
+
+        <div class="career-benefits">
+            <div class="benefit">
+                <i class="fas fa-briefcase"></i>
+                <h3>Growth Opportunities</h3>
+                <p>Clear career paths with opportunities for advancement and professional development</p>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-graduation-cap"></i>
+                <h3>Ongoing Training</h3>
+                <p>Access to continuing education and professional certifications</p>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-users"></i>
+                <h3>Supportive Culture</h3>
+                <p>Work with a team that values collaboration, innovation, and personal wellness</p>
+            </div>
+            <div class="benefit">
+                <i class="fas fa-handshake"></i>
+                <h3>Competitive Benefits</h3>
+                <p>Industry-leading compensation packages including health benefits and fitness perks</p>
+            </div>
+        </div>
+
+        <a href="careers.html" class="btn career-btn">View Current Openings</a>
+    </div>
+</section>
+
+<section class="faq">
+    <div class="container">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <h3>How is Smart Fitness different from other gyms?</h3>
+                <p>Smart Fitness stands out through our commitment to quality equipment, expert trainers, and personalized member experiences. We offer unmatched variety in our facilities, innovative fitness technologies, and a supportive community atmosphere that makes every workout motivating and effective.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Do you offer personal training?</h3>
+                <p>Yes, we offer comprehensive personal training services with certified fitness professionals. Our trainers hold both national and international certifications and specialize in various fitness areas including weight loss, muscle building, rehabilitation, sports performance, and senior fitness.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What's included in a membership?</h3>
+                <p>Standard memberships include access to all equipment, locker rooms and showers, free fitness assessments, and basic workout guidance. Premium memberships add group classes, personalized workout programs, nutrition consultations, and guest passes.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="location-map">
+    <div class="container">
+        <h2>Find Our Locations</h2>
+        <p>With over 20 locations across Sri Lanka, there's always a Smart Fitness near you.</p>
+        <div class="map-container">
+            <img src="/images/sri-lanka-map.jpg" alt="Smart Fitness Locations Map" class="location-map-image">
+        </div>
+        <a href="locations.html" class="btn location-btn">View All Locations</a>
+    </div>
+</section>
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section about-us">
+            <h2>About Us</h2>
+            <p>We are a team of passionate fitness enthusiasts who believe in the power of exercise to transform lives.<br><br> Our mission is to make fitness accessible to everyone, regardless of their age, experience, or fitness level.</p>
+        </div>
+        <div class="footer-section quick-links">
+            <h2>Quick Links</h2>
+            <ul>
+                <li><a href="/index">Home</a></li>
+                <li><a href="/aboutus">About Us</a></li>
+                <li><a href="/aboutus">Our Features</a></li>
+                <li><a href="/aboutus">Classes</a></li>
+                <li><a href="/aboutus">Contact Us</a></li>
+            </ul>
+        </div>
+        <div class="footer-section opening-hours">
+            <h2>Opening Hours</h2>
+            <p><strong>Monday - Friday</strong></p>
+            <p>8.00 AM - 8.00 PM</p>
+            <p><strong>Saturday - Sunday</strong></p>
+            <p>2.00 PM - 8.00 PM</p>
+        </div>
+        <div class="footer-section contact-us">
+            <h2>Contact Us</h2>
+            <p><i class="fas fa-map-marker-alt"></i> No:128, Malwatte Avenue, Colombo 10</p>
+            <p><i class="fas fa-phone"></i> +94 77 045 6514 </p>
+            <p><i class="fas fa-fax"></i> +94 76 453 1877 </p>
+            <p><i class="fas fa-envelope"></i> Smart Fitness@yahoo.com</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025. Smart Fitness.com</p>
+    </div>
+</footer>
+</body>
+</html>

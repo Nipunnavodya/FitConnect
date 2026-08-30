@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fitness - Reports</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #1a1c2e, #14162a);
+            color: #fff;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .scale-hover:hover {
+            transform: scale(1.03);
+            transition: transform 0.3s ease;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .animate-slide-up {
+            animation: slideUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .stat-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #fff;
+            display: inline-block;
+        }
+        .stat-badge.blue {
+            background: linear-gradient(to right, #6366f1, #8b5cf6);
+        }
+        .stat-badge.green {
+            background: linear-gradient(to right, #10b981, #14b8a6);
+        }
+        .stat-badge.pink {
+            background: linear-gradient(to right, #ec4899, #d946ef);
+        }
+        .stat-badge.yellow {
+            background: linear-gradient(to right, #f59e0b, #fbbf24);
+            color: #fff;
+        }
+        .stat-badge.red {
+            background: linear-gradient(to right, #ef4444, #b91c1c);
+        }
+        .chart-placeholder {
+            background: repeating-linear-gradient(
+                    135deg,
+                    #6366f1 0px,
+                    #6366f1 2px,
+                    transparent 2px,
+                    transparent 20px
+            );
+            border-radius: 1rem;
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a5b4fc;
+            font-size: 1.2rem;
+            font-weight: 500;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-poppins">
+<div class="flex min-h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="hidden lg:flex flex-col w-64 h-screen glass-effect flex-shrink-0">
+        <div class="p-6">
+            <a href="/admin/dashboard" class="flex items-center gap-3">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-2.5 rounded-lg">
+                    <i class="fas fa-dumbbell text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+            </a>
+        </div>
+        <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+            <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white transition-all duration-300">
+                <i class="fas fa-tachometer-alt w-4 text-center"></i><span class="font-medium">Dashboard</span>
+            </a>
+            <a href="/admin/admin/profile" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-id-card w-4 text-center"></i><span class="font-medium">Profile</span>
+            </a>
+            <a href="/admin/admin/members" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-users w-4 text-center"></i><span class="font-medium">Members</span>
+            </a>
+            <a href="/admin/instructors" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-chalkboard-teacher w-4 text-center"></i><span class="font-medium">Instructors</span>
+            </a>
+            <a href="/admin/classes" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-calendar-alt w-4 text-center"></i><span class="font-medium">Classes</span>
+            </a>
+            <a href="/admin/equipment" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-dumbbell w-4 text-center"></i><span class="font-medium">Equipment</span>
+            </a>
+            <a href="/admin/supplements/add" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-pills w-4 text-center"></i><span class="font-medium">Supplements</span>
+            </a>
+            <a href="/admin/membership-plans" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-tags w-4 text-center"></i><span class="font-medium">Membership Plans</span>
+            </a>
+            <a href="/admin/payment-history" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-history w-4 text-center"></i><span class="font-medium">Payment History</span>
+            </a>
+            <a href="/admin/announcements" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-bullhorn w-4 text-center"></i><span class="font-medium">Announcements</span>
+            </a>
+            <a href="/admin/settings" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-cog w-4 text-center"></i><span class="font-medium">Settings</span>
+            </a>
+        </nav>
+        <div class="p-4 border-t border-white/10">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="h-10 w-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-user-shield text-sm text-white"></i>
+                </div>
+                <div class="min-w-0">
+                    <h3 class="font-medium truncate" th:text="${admin != null ? admin.name : 'Admin'}">Admin</h3>
+                    <p class="text-xs text-gray-400">Administrator</p>
+                </div>
+            </div>
+            <a href="/logout">
+                <button class="w-full mt-2 bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i><span>Log Out</span>
+                </button>
+            </a>
+        </div>
+    </aside>
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto py-8 px-4 lg:px-12">
+        <div class="max-w-6xl mx-auto">
+            <header class="mb-8 animate-fade-in">
+                <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Reports & Analytics</h1>
+                <p class="text-gray-400 mt-2">Visualize your gym's performance, member trends, and more</p>
+            </header>
+            <!-- Filters -->
+            <div class="glass-effect rounded-xl p-6 mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 animate-slide-up">
+                <div class="flex gap-3 flex-1">
+                    <select class="bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors text-white">
+                        <option>This Month</option>
+                        <option>Last Month</option>
+                        <option>This Year</option>
+                        <option>Custom Range</option>
+                    </select>
+                    <select class="bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors text-white">
+                        <option>All Reports</option>
+                        <option>Membership</option>
+                        <option>Attendance</option>
+                        <option>Revenue</option>
+                        <option>Equipment</option>
+                    </select>
+                </div>
+                <button class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl hover:opacity-90 transition-all flex items-center gap-2 font-medium">
+                    <i class="fas fa-download"></i>
+                    <span>Export</span>
+                </button>
+            </div>
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="glass-effect rounded-xl p-6 animate-slide-up scale-hover" style="animation-delay: 0.2s;">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-300">Total Members</h3>
+                            <div class="mt-2 flex items-baseline">
+                                <p class="text-3xl font-semibold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">1,250</p>
+                            </div>
+                        </div>
+                        <span class="stat-badge blue">+3.2%</span>
+                    </div>
+                </div>
+                <div class="glass-effect rounded-xl p-6 animate-slide-up scale-hover" style="animation-delay: 0.3s;">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-300">Active Subscriptions</h3>
+                            <div class="mt-2 flex items-baseline">
+                                <p class="text-3xl font-semibold bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">980</p>
+                            </div>
+                        </div>
+                        <span class="stat-badge green">+1.1%</span>
+                    </div>
+                </div>
+                <div class="glass-effect rounded-xl p-6 animate-slide-up scale-hover" style="animation-delay: 0.4s;">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-300">Monthly Revenue</h3>
+                            <div class="mt-2 flex items-baseline">
+                                <p class="text-3xl font-semibold bg-gradient-to-r from-pink-400 to-pink-600 bg-clip-text text-transparent">$12,400</p>
+                            </div>
+                        </div>
+                        <span class="stat-badge pink">+5.8%</span>
+                    </div>
+                </div>
+                <div class="glass-effect rounded-xl p-6 animate-slide-up scale-hover" style="animation-delay: 0.5s;">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-300">Attendance Rate</h3>
+                            <div class="mt-2 flex items-baseline">
+                                <p class="text-3xl font-semibold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">87%</p>
+                            </div>
+                        </div>
+                        <span class="stat-badge yellow">-2.1%</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Chart & Details -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Chart Card -->
+                <div class="glass-effect rounded-xl p-6 col-span-2 animate-slide-up" style="animation-delay: 0.6s;">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">Membership Growth</h2>
+                        <span class="text-xs text-gray-400">Jan - Dec 2025</span>
+                    </div>
+                    <div class="chart-placeholder">
+                        [ Chart.js or analytics chart goes here ]
+                    </div>
+                </div>
+                <!-- Details Card -->
+                <div class="glass-effect rounded-xl p-6 animate-slide-up" style="animation-delay: 0.7s;">
+                    <h2 class="text-lg font-semibold mb-4">Quick Insights</h2>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-center gap-3">
+                            <span class="stat-badge blue">+120</span>
+                            New Members this Month
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="stat-badge green">+15</span>
+                            Renewals Processed
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="stat-badge red">-8</span>
+                            Memberships Expired
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="stat-badge yellow">92%</span>
+                            Avg. Class Attendance
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="stat-badge pink">$2,100</span>
+                            Equipment Maintenance Cost
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <footer class="mt-12 text-right text-xs text-gray-500">
+                © 2025 Smart Fitness. All rights reserved.
+            </footer>
+        </div>
+    </main>
+</div>
+</body>
+</html>

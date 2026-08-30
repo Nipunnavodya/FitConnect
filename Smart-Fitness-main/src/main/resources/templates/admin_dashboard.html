@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fitness - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #1a1c2e, #14162a);
+            color: #fff;
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .scale-hover:hover {
+            transform: scale(1.03);
+            transition: transform 0.3s ease;
+        }
+
+        .gradient-blue-purple {
+            background: linear-gradient(to right, #6b7280, #8b5cf6);
+        }
+
+        .gradient-purple-pink {
+            background: linear-gradient(to right, #8b5cf6, #d946ef);
+        }
+
+        .gradient-green-teal {
+            background: linear-gradient(to right, #10b981, #14b8a6);
+        }
+
+        .gradient-yellow-orange {
+            background: linear-gradient(to right, #fef08a, #f97316);
+        }
+
+        .bg-grid-white {
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 0.5px, transparent 0.5px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0.5px, transparent 0.5px);
+            background-size: 16px 16px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white font-poppins">
+    <div class="flex h-screen overflow-hidden">
+        <aside class="hidden lg:flex flex-col w-64 h-screen glass-effect flex-shrink-0">
+            <div class="p-6">
+                <a href="/admin/dashboard" class="flex items-center gap-3">
+                    <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-2.5 rounded-lg">
+                        <i class="fas fa-dumbbell text-white"></i>
+                    </div>
+                    <h1
+                        class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                        Smart Fitness</h1>
+                </a>
+            </div>
+            <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+                <a href="/admin/dashboard"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white scale-hover transition-all duration-300">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="/admin/admin/profile"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                    <i class="fas fa-id-card"></i>
+                    <span class="font-medium">Profile</span>
+                </a>
+                <a href="/admin/admin/members"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                    <i class="fas fa-users"></i>
+                    <span class="font-medium">Members</span>
+                </a>
+                <a href="/admin/instructors"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span class="font-medium">Instructors</span>
+                </a>
+                <a href="/admin/classes"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span class="font-medium">Classes</span>
+                </a>
+
+                <a href="/admin/equipment"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                    <i class="fas fa-dumbbell"></i>
+                    <span class="font-medium">Equipment</span>
+                </a>
+                <a href="/admin/supplements/add"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                    <i class="fas fa-pills"></i>
+                    <span class="font-medium">Manage Supplements</span>
+                </a>
+                <a href="/admin/membership-plans"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                    <i class="fas fa-tags"></i>
+                    <span class="font-medium">Membership Plans</span>
+                </a>
+                <a href="/admin/payment-history"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                    <i class="fas fa-history"></i>
+                    <span class="font-medium">Payment History</span>
+                </a>
+                <a href="/admin/announcements"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                    <i class="fas fa-bullhorn"></i>
+                    <span class="font-medium">Announcements</span>
+                </a>
+                <a href="/admin/settings"
+                    class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                    <i class="fas fa-cog"></i>
+                    <span class="font-medium">Settings</span>
+                </a>
+            </nav>
+            <div class="p-4 border-t border-white/10">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="h-10 w-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-user-shield text-sm text-white"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <h3 class="font-medium truncate" th:text="${admin != null ? admin.name : 'Admin'}">Admin</h3>
+                        <p class="text-xs text-gray-400">Administrator</p>
+                    </div>
+                </div>
+                <a href="/logout">
+                    <button
+                        class="w-full mt-2 bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all duration-300 flex items-center justify-center gap-2">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Log Out</span>
+                    </button>
+                </a>
+            </div>
+        </aside>
+
+        <header class="lg:hidden fixed w-full flex items-center justify-between p-4 glass-effect z-50">
+            <a href="#" class="flex items-center gap-2">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-1.5 rounded-lg">
+                    <i class="fas fa-dumbbell text-white"></i>
+                </div>
+                <h1
+                    class="text-lg font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                    Smart Fitness</h1>
+            </a>
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <i class="fas fa-bell text-gray-300"></i>
+                    <span
+                        class="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs">3</span>
+                </div>
+                <button aria-label="Toggle menu" class="p-1.5 rounded-lg bg-white/10">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto py-4 lg:py-6 px-4 lg:px-8 lg:pt-0 mt-16 lg:mt-0">
+            <div class="max-w-7xl mx-auto">
+                <header class="mb-8 animate-slide-up" style="animation-delay: 0.1s;">
+                    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+                        <div>
+                            <h1
+                                class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                                Welcome back, Sayura!</h1>
+                            <p class="text-gray-400 mt-2">Administrator Dashboard</p>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="glass-effect rounded-xl p-6 animate-slide-up scale-hover"
+                        style="animation-delay: 0.2s;">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-300">Total Members</h3>
+                                <div class="mt-2 flex items-baseline">
+                                    <p class="text-3xl font-semibold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent"
+                                        id="total-members-count">0</p>
+                                </div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700">
+                                <i class="fas fa-users text-white"></i>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="glass-effect rounded-xl p-6 animate-slide-up scale-hover"
+                        style="animation-delay: 0.4s;">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-sm font-medium text-gray-300">Total Revenue</h3>
+                                <div class="mt-2 flex items-baseline">
+                                    <p class="text-3xl font-semibold bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent"
+                                        id="total-revenue">RS.0</p>
+                                </div>
+                                <p class="text-xs mt-1 text-gray-400">+12% this month</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700">
+                                <i class="fas fa-money-bill-wave text-white"></i>
+                            </div>
+                        </div>
+                        <div class="mt-4 w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-purple-400 to-purple-600 rounded-full"
+                                style="width: 85%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="glass-effect rounded-xl p-6 animate-slide-up" style="animation-delay: 0.6s;">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-gradient-to-r from-blue-500 to-purple-500 h-10 w-1 rounded-full"></div>
+                                <h2 class="text-xl font-semibold">Members Overview</h2>
+                            </div>
+                            <div class="flex gap-2">
+                                <button
+                                    class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors text-sm">Day</button>
+                                <button
+                                    class="px-3 py-1.5 rounded-lg bg-white/10 text-blue-400 transition-colors text-sm">Week</button>
+                                <button
+                                    class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors text-sm">Month</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="membersChart" height="320"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect rounded-xl p-6 animate-slide-up" style="animation-delay: 0.7s;">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="bg-gradient-to-r from-green-500 to-teal-500 h-10 w-1 rounded-full"></div>
+                                <h2 class="text-xl font-semibold">Revenue Overview</h2>
+                            </div>
+                            <div class="flex gap-2">
+                                <button
+                                    class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors text-sm">Day</button>
+                                <button
+                                    class="px-3 py-1.5 rounded-lg bg-white/10 text-blue-400 transition-colors text-sm">Week</button>
+                                <button
+                                    class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 active:bg-white/15 transition-colors text-sm">Month</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="revenueChart" height="320"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="glass-effect rounded-xl p-6 animate-slide-up bg-grid-white"
+                        style="animation-delay: 0.8s;">
+                        <h2 class="text-xl font-semibold mb-4">Gym Capacity</h2>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div
+                                class="h-12 w-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                                <i class="fas fa-dumbbell text-white text-2xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-gray-300">Current Capacity</p>
+                                <p class="text-2xl font-semibold">56/100</p>
+                            </div>
+                        </div>
+                        <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
+                                style="width: 56%;"></div>
+                        </div>
+                        <div class="flex justify-between mt-2 text-sm text-gray-400">
+                            <span>0%</span>
+                            <span>100%</span>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect rounded-xl p-6 animate-slide-up bg-grid-white"
+                        style="animation-delay: 0.9s;">
+                        <h2 class="text-xl font-semibold mb-4">Workout Categories</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex items-center gap-3">
+                                <div class="h-8 w-8 rounded-md bg-gradient-to-r from-red-500 to-orange-500"></div>
+                                <span class="text-sm font-medium">Strength</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="h-8 w-8 rounded-md bg-gradient-to-r from-yellow-500 to-lime-500"></div>
+                                <span class="text-sm font-medium">Cardio</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="h-8 w-8 rounded-md bg-gradient-to-r from-green-500 to-teal-500"></div>
+                                <span class="text-sm font-medium">Yoga</span>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="h-8 w-8 rounded-md bg-gradient-to-r from-blue-500 to-purple-500"></div>
+                                <span class="text-sm font-medium">Crossfit</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const membersChartCtx = document.getElementById('membersChart').getContext('2d');
+        const revenueChartCtx = document.getElementById('revenueChart').getContext('2d');
+
+        const createGradient = (ctx, gradientColors) => {
+            const gradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.clientHeight);
+            gradientColors.forEach(color => {
+                gradient.addColorStop(color.offset, color.color);
+            });
+            return gradient;
+        };
+
+        const memberGradient = createGradient(membersChartCtx, [
+            { offset: 0, color: 'rgba(107, 114, 128, 0.9)' },
+            { offset: 0.3, color: 'rgba(139, 92, 246, 0.7)' },
+            { offset: 1, color: 'rgba(139, 92, 246, 0)' }
+        ]);
+
+        const revenueGradient = createGradient(revenueChartCtx, [
+            { offset: 0, color: 'rgba(16, 185, 129, 0.9)' },
+            { offset: 0.3, color: 'rgba(20, 184, 150, 0.7)' },
+            { offset: 1, color: 'rgba(20, 184, 150, 0)' }
+        ]);
+
+        new Chart(membersChartCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Active Members',
+                    data: [1000, 1050, 1100, 1200, 1250, 1300, 1400],
+                    backgroundColor: memberGradient,
+                    borderColor: 'rgba(139, 92, 246, 1)',
+                    borderWidth: 3,
+                    fill: true,
+                    pointRadius: 6,
+                    pointBackgroundColor: 'rgba(139, 92, 246, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverRadius: 8,
+                    pointHoverBackgroundColor: 'rgba(139, 92, 246, 1)',
+                    pointHoverBorderColor: '#fff',
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    title: {
+                        display: true,
+                        text: 'Members Overview',
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        color: '#fff',
+                        padding: 0
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false,
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#fff',
+                            font: {
+                                size: 14
+                            },
+                            padding: 10
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#fff',
+                            font: {
+                                size: 14
+                            },
+                            padding: 10,
+                            callback: function (value) {
+                                return value;
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                }
+            }
+        });
+
+        new Chart(revenueChartCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Revenue ($)',
+                    data: [60000, 65000, 70000, 75000, 80000, 85000, 95000],
+                    backgroundColor: revenueGradient,
+                    borderWidth: 0,
+                    borderRadius: 8,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false,
+                    },
+                    title: {
+                        display: true,
+                        text: 'Revenue Overview',
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        },
+                        color: '#fff',
+                        padding: 0
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false,
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#fff',
+                            font: {
+                                size: 14
+                            },
+                            padding: 10
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)',
+                            lineWidth: 1
+                        },
+                        ticks: {
+                            color: '#fff',
+                            font: {
+                                size: 14
+                            },
+                            padding: 10,
+                            callback: function (value) {
+                                return '$' + value;
+                            }
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+                }
+            }
+        });
+
+        // Fetch and update total revenue
+        fetch('/admin/api/total-revenue')
+            .then(response => response.json())
+            .then(total => {
+                document.getElementById('total-revenue').textContent = 'RS.' + total.toLocaleString();
+            });
+
+        // Fetch and update total members
+        fetch('/admin/api/total-members')
+            .then(response => response.json())
+            .then(total => {
+                document.getElementById('total-members-count').textContent = total;
+            });
+    </script>
+</body>
+
+</html>

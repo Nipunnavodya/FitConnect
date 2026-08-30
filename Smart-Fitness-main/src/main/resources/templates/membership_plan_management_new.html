@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fitness - Membership Plans Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #1a1c2e, #14162a);
+            color: #fff;
+        }
+        .animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
+        .animate-slide-up { animation: slideUp 0.5s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .scale-hover:hover { transform: scale(1.03); transition: transform 0.3s ease; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-poppins">
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="hidden lg:flex flex-col w-64 h-screen glass-effect animate-fade-in">
+        <div class="p-6">
+            <a href="/dashboard" class="flex items-center gap-3">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-2.5 rounded-lg">
+                    <i class="fas fa-dumbbell text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+            </a>
+        </div>
+        <nav class="flex-1 p-4 space-y-2">
+            <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-tachometer-alt"></i>
+                <span class="font-medium">Dashboard</span>
+            </a>
+            <a href="/admin/admin/profile" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-id-card"></i>
+                <span class="font-medium">Profile</span>
+            </a>
+            <a href="/admin/admin/members" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-users"></i>
+                <span class="font-medium">Members</span>
+            </a>
+            <a href="/admin/classes" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-calendar-alt"></i>
+                <span class="font-medium">Classes</span>
+            </a>
+            <a href="/admin/equipment" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-dumbbell"></i>
+                <span class="font-medium">Equipment</span>
+            </a>
+            <a href="/admin/membership-plans" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white scale-hover transition-all duration-300">
+                <i class="fas fa-tags"></i>
+                <span class="font-medium">Membership Plans</span>
+            </a>
+            <a href="/admin/payment-history" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-history"></i>
+                <span class="font-medium">Payment History</span>
+            </a>
+            <a href="admin/settings" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-cog"></i>
+                <span class="font-medium">Settings</span>
+            </a>
+        </nav>
+        <div class="p-4 border-t border-white/10">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="h-10 w-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
+                    <span class="font-semibold">ST</span>
+                </div>
+                <div>
+                    <h3 class="font-medium">Sayura Thejan</h3>
+                    <p class="text-xs text-gray-400">Administrator</p>
+                </div>
+            </div>
+            <a href="/logout">
+                <button class="w-full mt-2 bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log Out</span>
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Mobile Header -->
+    <header class="lg:hidden fixed w-full flex items-center justify-between p-4 glass-effect z-50">
+        <a href="#" class="flex items-center gap-2">
+            <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-1.5 rounded-lg">
+                <i class="fas fa-dumbbell text-white"></i>
+            </div>
+            <h1 class="text-lg font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+        </a>
+        <div class="flex items-center gap-4">
+            <button aria-label="Toggle menu" class="p-1.5 rounded-lg bg-white/10">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto py-4 lg:py-6 px-4 lg:px-8 lg:pt-0 mt-16 lg:mt-0">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8 animate-slide-up" style="animation-delay: 0.1s;">
+                <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+                    <div>
+                        <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Membership Plans</h1>
+                        <p class="text-gray-400 mt-2">Manage gym membership plans</p>
+                    </div>
+                    <button onclick="openModal()" class="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl text-white font-medium hover:opacity-90 transition-all flex items-center gap-2">
+                        <i class="fas fa-plus"></i>
+                        Add New Plan
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-effect rounded-xl p-6 animate-slide-up scale-hover" style="animation-delay: 0.2s;">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-300">Total Plans</h3>
+                            <p class="text-3xl font-semibold mt-2 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent" id="totalPlans">0</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700">
+                            <i class="fas fa-tags text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-effect rounded-xl p-6 animate-slide-up scale-hover" style="animation-delay: 0.3s;">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-300">Price Range</h3>
+                            <p class="text-xl font-semibold mt-2 bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent" id="priceRange">Rs. 0 - Rs. 0</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-gradient-to-br from-green-500 to-green-700">
+                            <i class="fas fa-money-bill-wave text-white"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-effect rounded-xl p-6 animate-slide-up scale-hover" style="animation-delay: 0.4s;">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-300">Popular Plan</h3>
+                            <p class="text-xl font-semibold mt-2 bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent" id="popularPlan">None</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-gradient-to-br from-yellow-500 to-yellow-700">
+                            <i class="fas fa-star text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plans Table -->
+            <div class="glass-effect rounded-xl p-6 animate-slide-up" style="animation-delay: 0.5s;">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b border-white/10">
+                                <th class="py-4 px-4 text-sm font-medium text-gray-300">ID</th>
+                                <th class="py-4 px-4 text-sm font-medium text-gray-300">Plan Name</th>
+                                <th class="py-4 px-4 text-sm font-medium text-gray-300">Description</th>
+                                <th class="py-4 px-4 text-sm font-medium text-gray-300">Price (Rs.)</th>
+                                <th class="py-4 px-4 text-sm font-medium text-gray-300">Duration</th>
+                                <th class="py-4 px-4 text-sm font-medium text-gray-300">Popular</th>
+                                <th class="py-4 px-4 text-sm font-medium text-gray-300">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="plansTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Add/Edit Plan Modal -->
+<div id="planModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay">
+    <div class="glass-effect rounded-2xl p-8 w-full max-w-lg mx-4" style="background: rgba(26, 28, 46, 0.95);">
+        <div class="flex justify-between items-center mb-6">
+            <h2 id="modalTitle" class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Add New Plan</h2>
+            <button onclick="closeModal()" class="p-2 hover:bg-white/10 rounded-lg transition-all">
+                <i class="fas fa-times text-gray-400"></i>
+            </button>
+        </div>
+        <form id="planForm" onsubmit="savePlan(event)">
+            <input type="hidden" id="planId" value="">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm text-gray-400 mb-1 block">Plan Name</label>
+                    <input type="text" id="planName" required class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="e.g. Premium Plan">
+                </div>
+                <div>
+                    <label class="text-sm text-gray-400 mb-1 block">Description</label>
+                    <input type="text" id="planDescription" required class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="e.g. Best for serious athletes">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm text-gray-400 mb-1 block">Price (Rs.)</label>
+                        <input type="number" id="planPrice" required min="0" step="0.01" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="35000">
+                    </div>
+                    <div>
+                        <label class="text-sm text-gray-400 mb-1 block">Duration (months)</label>
+                        <input type="number" id="planDuration" required min="1" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="1" value="1">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-sm text-gray-400 mb-1 block">Features (one per line)</label>
+                    <textarea id="planFeatures" rows="4" class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" placeholder="Access to gym equipment&#10;Locker room access&#10;Personal Training"></textarea>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="checkbox" id="planPopular" class="w-4 h-4 rounded bg-white/5 border-white/10">
+                    <label for="planPopular" class="text-sm text-gray-400">Mark as Popular</label>
+                </div>
+            </div>
+            <div class="flex justify-end gap-4 mt-6">
+                <button type="button" onclick="closeModal()" class="px-6 py-2.5 bg-white/10 hover:bg-white/20 rounded-xl transition-all">Cancel</button>
+                <button type="submit" class="px-6 py-2.5 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl hover:opacity-90 transition-all">Save Plan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center modal-overlay">
+    <div class="glass-effect rounded-2xl p-8 w-full max-w-md mx-4" style="background: rgba(26, 28, 46, 0.95);">
+        <div class="text-center">
+            <div class="mx-auto w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-trash-alt text-red-500 text-2xl"></i>
+            </div>
+            <h2 class="text-xl font-bold mb-2">Delete Plan</h2>
+            <p class="text-gray-400 mb-6">Are you sure you want to delete this membership plan? This action cannot be undone.</p>
+            <div class="flex justify-center gap-4">
+                <button onclick="closeDeleteModal()" class="px-6 py-2.5 bg-white/10 hover:bg-white/20 rounded-xl transition-all">Cancel</button>
+                <button id="confirmDeleteBtn" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 rounded-xl transition-all">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_URL = '/admin/api/plans';
+    let plans = [];
+
+    async function loadPlans() {
+        try {
+            const response = await fetch(API_URL);
+            plans = await response.json();
+            renderTable();
+            updateStats();
+        } catch (error) {
+            console.error('Error loading plans:', error);
+        }
+    }
+
+    function renderTable() {
+        const tbody = document.getElementById('plansTableBody');
+        tbody.innerHTML = plans.map(plan => `
+            <tr class="border-b border-white/5 hover:bg-white/5 transition-all">
+                <td class="py-4 px-4 text-sm">${plan.id}</td>
+                <td class="py-4 px-4">
+                    <div class="flex items-center gap-2">
+                        <span class="font-medium">${plan.name}</span>
+                        ${plan.popular ? '<span class="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">Popular</span>' : ''}
+                    </div>
+                </td>
+                <td class="py-4 px-4 text-sm text-gray-400">${plan.description || '-'}</td>
+                <td class="py-4 px-4 text-sm font-medium text-green-400">Rs. ${Number(plan.price).toLocaleString()}</td>
+                <td class="py-4 px-4 text-sm">${plan.durationMonths} month${plan.durationMonths > 1 ? 's' : ''}</td>
+                <td class="py-4 px-4 text-sm">
+                    <span class="px-2 py-1 rounded-full text-xs ${plan.popular ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-500/20 text-gray-400'}">
+                        ${plan.popular ? 'Yes' : 'No'}
+                    </span>
+                </td>
+                <td class="py-4 px-4">
+                    <div class="flex items-center gap-2">
+                        <button onclick="editPlan(${plan.id})" class="p-2 hover:bg-white/10 rounded-lg transition-all text-blue-400" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="confirmDelete(${plan.id})" class="p-2 hover:bg-white/10 rounded-lg transition-all text-red-400" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function updateStats() {
+        document.getElementById('totalPlans').textContent = plans.length;
+        if (plans.length > 0) {
+            const prices = plans.map(p => p.price);
+            const min = Math.min(...prices);
+            const max = Math.max(...prices);
+            document.getElementById('priceRange').textContent = `Rs. ${min.toLocaleString()} - Rs. ${max.toLocaleString()}`;
+            const popular = plans.find(p => p.popular);
+            document.getElementById('popularPlan').textContent = popular ? popular.name : 'None set';
+        }
+    }
+
+    function openModal(plan = null) {
+        const modal = document.getElementById('planModal');
+        const title = document.getElementById('modalTitle');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+
+        if (plan) {
+            title.textContent = 'Edit Plan';
+            document.getElementById('planId').value = plan.id;
+            document.getElementById('planName').value = plan.name;
+            document.getElementById('planDescription').value = plan.description || '';
+            document.getElementById('planPrice').value = plan.price;
+            document.getElementById('planDuration').value = plan.durationMonths;
+            document.getElementById('planFeatures').value = plan.features ? plan.features.split('|').join('\n') : '';
+            document.getElementById('planPopular').checked = plan.popular;
+        } else {
+            title.textContent = 'Add New Plan';
+            document.getElementById('planForm').reset();
+            document.getElementById('planId').value = '';
+            document.getElementById('planDuration').value = '1';
+        }
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('planModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    function editPlan(id) {
+        const plan = plans.find(p => p.id === id);
+        if (plan) openModal(plan);
+    }
+
+    async function savePlan(event) {
+        event.preventDefault();
+        const id = document.getElementById('planId').value;
+        const featuresText = document.getElementById('planFeatures').value.trim();
+        const features = featuresText ? featuresText.split('\n').filter(f => f.trim()).join('|') : '';
+
+        const planData = {
+            name: document.getElementById('planName').value,
+            description: document.getElementById('planDescription').value,
+            price: parseFloat(document.getElementById('planPrice').value),
+            durationMonths: parseInt(document.getElementById('planDuration').value),
+            features: features,
+            popular: document.getElementById('planPopular').checked
+        };
+
+        try {
+            let response;
+            if (id) {
+                response = await fetch(`${API_URL}/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(planData)
+                });
+            } else {
+                response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(planData)
+                });
+            }
+
+            if (response.ok) {
+                closeModal();
+                loadPlans();
+            } else {
+                alert('Error saving plan');
+            }
+        } catch (error) {
+            console.error('Error saving plan:', error);
+            alert('Error saving plan');
+        }
+    }
+
+    let deleteId = null;
+    function confirmDelete(id) {
+        deleteId = id;
+        const modal = document.getElementById('deleteModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeDeleteModal() {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        deleteId = null;
+    }
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
+        if (deleteId) {
+            try {
+                const response = await fetch(`${API_URL}/${deleteId}`, { method: 'DELETE' });
+                if (response.ok) {
+                    closeDeleteModal();
+                    loadPlans();
+                }
+            } catch (error) {
+                console.error('Error deleting plan:', error);
+            }
+        }
+    });
+
+    // Load plans on page load
+    document.addEventListener('DOMContentLoaded', loadPlans);
+</script>
+</body>
+</html>

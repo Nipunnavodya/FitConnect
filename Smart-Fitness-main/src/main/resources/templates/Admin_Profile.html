@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fitness - Admin Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #1a1c2e, #14162a);
+            color: #fff;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .scale-hover:hover {
+            transform: scale(1.03);
+            transition: transform 0.3s ease;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .animate-slide-up {
+            animation: slideUp 0.5s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .bg-gradient-header {
+            background: linear-gradient(to right, #6b7280, #8b5cf6, #d946ef);
+        }
+        .profile-gradient {
+            background: linear-gradient(to right, #8b5cf6, #6366f1, #ec4899);
+        }
+        .sidebar-gradient {
+            background: linear-gradient(to right, #6b7280, #8b5cf6);
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+            display: inline-block;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-poppins">
+<div class="flex min-h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="hidden lg:flex flex-col w-64 h-screen glass-effect flex-shrink-0">
+        <div class="p-6">
+            <a href="/admin/dashboard" class="flex items-center gap-3">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-2.5 rounded-lg">
+                    <i class="fas fa-dumbbell text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+            </a>
+        </div>
+        <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+            <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-tachometer-alt w-4 text-center"></i><span class="font-medium">Dashboard</span>
+            </a>
+            <a href="/admin/admin/profile" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white transition-all duration-300">
+                <i class="fas fa-id-card w-4 text-center"></i><span class="font-medium">Profile</span>
+            </a>
+            <a href="/admin/admin/members" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-users w-4 text-center"></i><span class="font-medium">Members</span>
+            </a>
+            <a href="/admin/instructors" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-chalkboard-teacher w-4 text-center"></i><span class="font-medium">Instructors</span>
+            </a>
+            <a href="/admin/classes" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-calendar-alt w-4 text-center"></i><span class="font-medium">Classes</span>
+            </a>
+            <a href="/admin/equipment" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-dumbbell w-4 text-center"></i><span class="font-medium">Equipment</span>
+            </a>
+            <a href="/admin/supplements/add" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-pills w-4 text-center"></i><span class="font-medium">Supplements</span>
+            </a>
+            <a href="/admin/membership-plans" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-tags w-4 text-center"></i><span class="font-medium">Membership Plans</span>
+            </a>
+            <a href="/admin/payment-history" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-history w-4 text-center"></i><span class="font-medium">Payment History</span>
+            </a>
+            <a href="/admin/announcements" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-bullhorn w-4 text-center"></i><span class="font-medium">Announcements</span>
+            </a>
+            <a href="/admin/settings" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-cog w-4 text-center"></i><span class="font-medium">Settings</span>
+            </a>
+        </nav>
+        <div class="p-4 border-t border-white/10">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="h-10 w-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-user-shield text-sm text-white"></i>
+                </div>
+                <div class="min-w-0">
+                    <h3 class="font-medium truncate" th:text="${admin != null ? admin.name : 'Admin'}">Admin</h3>
+                    <p class="text-xs text-gray-400">Administrator</p>
+                </div>
+            </div>
+            <a href="/logout">
+                <button class="w-full mt-2 bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all duration-300 flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i><span>Log Out</span>
+                </button>
+            </a>
+        </div>
+    </aside>
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto py-8 px-4 lg:px-12">
+        <div class="max-w-5xl mx-auto">
+            <header class="mb-8 animate-slide-up" style="animation-delay: 0.1s;">
+                <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Admin Profile</h1>
+                <p class="text-gray-400 mt-2">Manage your personal information and account preferences</p>
+            </header>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Profile Card -->
+                <div class="glass-effect rounded-xl overflow-hidden animate-slide-up scale-hover" style="animation-delay: 0.2s;">
+                    <div class="h-28 profile-gradient"></div>
+                    <div class="relative px-6 pb-6">
+                        <div class="absolute -top-12 left-6">
+                            <div class="h-24 w-24 rounded-full border-4 border-gray-900 bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center overflow-hidden">
+                                <img src="/images/Sayura.jpg" alt="Sayura Thejan" class="h-full w-full object-cover">
+                            </div>
+                        </div>
+                        <div class="pt-16">
+                            <h2 class="text-2xl font-bold">Sayura Thejan</h2>
+                            <div class="flex items-center gap-2 text-purple-300 mt-1">
+                                <i class="far fa-clock"></i>
+                                <span>Administrator</span>
+                            </div>
+                            <div class="mt-6 space-y-3">
+                                <div class="flex items-center gap-3 text-gray-300">
+                                    <i class="far fa-envelope"></i>
+                                    <span>admin@user.com</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-gray-300">
+                                    <i class="fas fa-phone"></i>
+                                    <span>+94 77 345 2256</span>
+                                </div>
+                                <div class="flex items-center gap-3 text-gray-300">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span>Admin since Jan 2022</span>
+                                </div>
+                            </div>
+                            <div class="border-t border-white/10 my-6"></div>
+                            <div>
+                                <h3 class="text-base font-semibold mb-2">Status</h3>
+                                <div class="flex items-center gap-2">
+                                    <span class="status-dot"></span>
+                                    <span class="text-green-400">Active</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Profile Form -->
+                <div class="glass-effect rounded-xl p-8 animate-slide-up" style="animation-delay: 0.3s;">
+                    <div class="mb-6 border-b border-white/10 pb-4">
+                        <h2 class="text-xl font-semibold">Personal Information</h2>
+                        <p class="text-gray-400 text-sm mt-1">Update your personal details and contact information</p>
+                    </div>
+                    <form>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-1">First Name</label>
+                                <input type="text" class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" value="Sayura">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-1">Last Name</label>
+                                <input type="text" class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" value="Thejan">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-1">Email</label>
+                                <input type="email" class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" value="sayura@Smart Fitness.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-1">Phone Number</label>
+                                <input type="tel" class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" value="+94 77 345 2256">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm text-gray-300 mb-1">Bio</label>
+                                <textarea class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors min-h-[100px] resize-y">Senior administrator with over 5 years of experience in fitness management. Specialized in member engagement and facility operations.</textarea>
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-8">
+                            <button type="button" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:opacity-90 transition-all font-semibold">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

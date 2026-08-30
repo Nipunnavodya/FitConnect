@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Fitness - Members</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #1a1c2e, #14162a);
+      color: #fff;
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .animate-slide-up {
+      animation: slideUp 0.5s ease-out forwards;
+      opacity: 0;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .scale-hover:hover {
+      transform: scale(1.03);
+      transition: transform 0.3s ease;
+    }
+    .gradient-blue-purple {
+      background: linear-gradient(to right, #6b7280, #8b5cf6);
+    }
+    .gradient-purple-pink {
+      background: linear-gradient(to right, #8b5cf6, #d946ef);
+    }
+    .gradient-green-teal {
+      background: linear-gradient(to right, #10b981, #14b8a6);
+    }
+    .gradient-yellow-orange {
+      background: linear-gradient(to right, #fef08a, #f97316);
+    }
+    .bg-grid-white {
+      background-image:
+              linear-gradient(rgba(255, 255, 255, 0.05) 0.5px, transparent 0.5px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0.5px, transparent 0.5px);
+      background-size: 16px 16px;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .modal {
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .badge-premium {
+      background: linear-gradient(to right, #f59e0b, #d97706);
+    }
+    .badge-standard {
+      background: linear-gradient(to right, #3b82f6, #2563eb);
+    }
+    .badge-basic {
+      background: linear-gradient(to right, #6b7280, #4b5563);
+    }
+    .badge-expired {
+      background: linear-gradient(to right, #ef4444, #b91c1c);
+    }
+    .renewal-badge-urgent {
+      background: linear-gradient(to right, #ef4444, #b91c1c);
+    }
+    .renewal-badge-soon {
+      background: linear-gradient(to right, #f59e0b, #d97706);
+    }
+    .renewal-badge-ok {
+      background: linear-gradient(to right, #10b981, #059669);
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white font-poppins">
+<div class="flex h-screen overflow-hidden">
+  <aside class="hidden lg:flex flex-col w-64 h-screen glass-effect flex-shrink-0">
+    <div class="p-6">
+      <a href="/admin/dashboard" class="flex items-center gap-3">
+        <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-2.5 rounded-lg">
+          <i class="fas fa-dumbbell text-white"></i>
+        </div>
+        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+      </a>
+    </div>
+    <nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+      <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+        <i class="fas fa-tachometer-alt w-4 text-center"></i><span class="font-medium">Dashboard</span>
+      </a>
+      <a href="/admin/admin/profile" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+        <i class="fas fa-id-card w-4 text-center"></i><span class="font-medium">Profile</span>
+      </a>
+      <a href="/admin/admin/members" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white transition-all duration-300">
+        <i class="fas fa-users w-4 text-center"></i><span class="font-medium">Members</span>
+      </a>
+      <a href="/admin/instructors" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+        <i class="fas fa-chalkboard-teacher w-4 text-center"></i><span class="font-medium">Instructors</span>
+      </a>
+      <a href="/admin/classes" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+        <i class="fas fa-calendar-alt w-4 text-center"></i><span class="font-medium">Classes</span>
+      </a>
+      <a href="/admin/equipment" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+        <i class="fas fa-dumbbell w-4 text-center"></i><span class="font-medium">Equipment</span>
+      </a>
+      <a href="/admin/supplements/add" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+        <i class="fas fa-pills w-4 text-center"></i><span class="font-medium">Supplements</span>
+      </a>
+      <a href="/admin/membership-plans" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+        <i class="fas fa-tags w-4 text-center"></i><span class="font-medium">Membership Plans</span>
+      </a>
+      <a href="/admin/payment-history" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+        <i class="fas fa-history w-4 text-center"></i><span class="font-medium">Payment History</span>
+      </a>
+      <a href="/admin/announcements" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+        <i class="fas fa-bullhorn w-4 text-center"></i><span class="font-medium">Announcements</span>
+      </a>
+      <a href="/admin/settings" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+        <i class="fas fa-cog w-4 text-center"></i><span class="font-medium">Settings</span>
+      </a>
+    </nav>
+    <div class="p-4 border-t border-white/10">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="h-10 w-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center flex-shrink-0">
+          <i class="fas fa-user-shield text-sm text-white"></i>
+        </div>
+        <div class="min-w-0">
+          <h3 class="font-medium truncate" th:text="${admin != null ? admin.name : 'Admin'}">Admin</h3>
+          <p class="text-xs text-gray-400">Administrator</p>
+        </div>
+      </div>
+      <a href="/logout">
+        <button class="w-full mt-2 bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 transition-all duration-300 flex items-center justify-center gap-2">
+          <i class="fas fa-sign-out-alt"></i><span>Log Out</span>
+        </button>
+      </a>
+    </div>
+  </aside>
+
+  <header class="lg:hidden fixed w-full flex items-center justify-between p-4 glass-effect z-50">
+    <a href="#" class="flex items-center gap-2">
+      <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-1.5 rounded-lg">
+        <i class="fas fa-dumbbell text-white"></i>
+      </div>
+      <h1 class="text-lg font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+    </a>
+    <div class="flex items-center gap-4">
+      <div class="relative">
+        <i class="fas fa-bell text-gray-300"></i>
+        <span class="absolute -top-1 -right-1 h-4 w-4 bg-red-500 rounded-full flex items-center justify-center text-xs">3</span>
+      </div>
+      <button aria-label="Toggle menu" class="p-1.5 rounded-lg bg-white/10">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 overflow-y-auto py-4 lg:py-6 px-4 lg:px-8 lg:pt-0 mt-16 lg:mt-0">
+    <div class="max-w-7xl mx-auto">
+      <header class="mb-8 animate-slide-up" style="animation-delay: 0.1s;">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Members Management</h1>
+            <p class="text-gray-400 mt-2">View and manage all fitness center members</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="glass-effect rounded-xl p-6 animate-slide-up scale-hover" style="animation-delay: 0.2s;">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="text-sm font-medium text-gray-300">Total Members</h3>
+              <div class="mt-2 flex items-baseline">
+                <p class="text-3xl font-semibold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent" id="total-members-count">0</p>
+              </div>
+            </div>
+            <div class="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700">
+              <i class="fas fa-users text-white"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search & Filter -->
+      <div class="glass-effect rounded-xl p-6 mb-8 animate-slide-up" style="animation-delay: 0.6s;">
+        <div class="flex flex-col md:flex-row gap-4">
+          <div class="relative flex-1">
+            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <input type="text" id="search-input" placeholder="Search members..." class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-12 focus:outline-none focus:border-purple-500 transition-colors">
+          </div>
+          <div class="flex gap-2 flex-wrap">
+
+            <select id="sort-by" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition-colors">
+              <option value="renewal">Default</option>
+              <option value="name">Sort by A-Z</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Members Table -->
+      <div class="glass-effect rounded-xl overflow-hidden mb-8 animate-slide-up" style="animation-delay: 0.7s;">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+            <tr class="border-b border-white/10">
+              <th class="p-4">
+                <div class="flex items-center">
+                  <input type="checkbox" id="select-all" class="h-4 w-4 rounded bg-white/5 border-white/20 focus:ring-0">
+                  <label for="select-all" class="sr-only">Select All</label>
+                </div>
+              </th>
+              <th class="p-4 font-medium">Member</th>
+              <th class="p-4 font-medium">Email Address</th>
+              <th class="p-4 font-medium">Gym Branch</th>
+              <th class="p-4 font-medium">Status</th>
+              <th class="p-4 font-medium">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="members-table-body">
+            <!-- Table rows will be dynamically generated -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="p-4 border-t border-white/10 flex justify-between items-center">
+          <p class="text-sm text-gray-400">Showing <span id="showing-count">1-10</span> of <span id="total-count">100</span> members</p>
+          <div class="flex gap-2">
+            <button class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="p-2 rounded-lg bg-white/10 transition-all">1</button>
+            <button class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">2</button>
+            <button class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">3</button>
+            <button class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Add Member Modal -->
+<div id="add-member-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm opacity-0 invisible modal">
+  <div class="glass-effect rounded-xl max-w-md w-full mx-4 animate-scale-in">
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-semibold">Add New Member</h2>
+        <button id="close-add-modal" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-all">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <form id="add-member-form">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm text-gray-300 mb-1">Full Name</label>
+            <input type="text" class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" required>
+          </div>
+          <div>
+            <label class="block text-sm text-gray-300 mb-1">Email Address</label>
+            <input type="email" class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" required>
+          </div>
+          <div>
+            <label class="block text-sm text-gray-300 mb-1">Phone Number</label>
+            <input type="tel" class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" required>
+          </div>
+          <div>
+            <label class="block text-sm text-gray-300 mb-1">Membership Type</label>
+            <select class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" required>
+              <option value="">Select Membership</option>
+              <option value="premium">Premium ($99/month)</option>
+              <option value="standard">Standard ($59/month)</option>
+              <option value="basic">Basic ($29/month)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm text-gray-300 mb-1">Membership Duration</label>
+            <select class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" required>
+              <option value="1">1 Month</option>
+              <option value="3">3 Months</option>
+              <option value="6">6 Months</option>
+              <option value="12">12 Months</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm text-gray-300 mb-1">Payment Method</label>
+            <select class="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-purple-500 transition-colors" required>
+              <option value="">Select Payment Method</option>
+              <option value="credit">Credit Card</option>
+              <option value="debit">Debit Card</option>
+              <option value="bank">Bank Transfer</option>
+              <option value="cash">Cash</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-6 flex justify-end gap-3">
+          <button type="button" id="cancel-add-member" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-all">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg hover:opacity-90 transition-all">
+            Add Member
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Renewal Queue Modal -->
+<div id="renewal-queue-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 backdrop-blur-sm opacity-0 invisible modal">
+  <div class="glass-effect rounded-xl max-w-2xl w-full mx-4 animate-scale-in">
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-semibold">Membership Renewal Queue</h2>
+        <button id="close-queue-modal" class="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-all">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="mb-4">
+        <p class="text-gray-300 text-sm">Members sorted by renewal urgency. Process renewals to maintain active memberships.</p>
+      </div>
+
+      <div class="space-y-3 max-h-96 overflow-y-auto pr-2">
+        <!-- Queue items will be dynamically generated -->
+      </div>
+
+      <div class="mt-6 flex justify-between">
+        <button id="process-all-btn" class="px-4 py-2 bg-gradient-to-r from-green-500 to-teal-600 rounded-lg hover:opacity-90 transition-all flex items-center gap-2">
+          <i class="fas fa-check-double"></i>
+          <span>Process All</span>
+        </button>
+        <button id="close-queue-btn" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-all">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Fetch members from users.csv
+  async function fetchMembers() {
+    try {
+      const response = await fetch('/admin/api/users');
+      const members = await response.json();
+      return members;
+    } catch (error) {
+      console.error('Error fetching members:', error);
+      return [];
+    }
+  }
+
+  // Insertion Sort Algorithm for Alphabetical Order
+  function insertionSortAlphabetical(arr) {
+    const result = [...arr];
+    for (let i = 1; i < result.length; i++) {
+      const current = result[i];
+      let j = i - 1;
+      while (j >= 0 && result[j].name.toLowerCase() > current.name.toLowerCase()) {
+        result[j + 1] = result[j];
+        j--;
+      }
+      result[j + 1] = current;
+    }
+    return result;
+  }
+
+  // Delete member
+  async function deleteMember(memberId) {
+    if (confirm('Are you sure you want to delete this member?')) {
+      try {
+        const response = await fetch(`/admin/api/member-delete-user/${memberId}`, { method: 'POST' });
+        const result = await response.json();
+        if (result.success) {
+          alert(result.message || 'Member deleted successfully');
+          loadMembers();
+        } else {
+          alert(result.message || 'Failed to delete member');
+        }
+      } catch (error) {
+        console.error('Error deleting member:', error);
+      }
+    }
+  }
+
+  // Render members table
+  function renderMembersTable(members) {
+    const tableBody = document.getElementById('members-table-body');
+    tableBody.innerHTML = '';
+
+    members.forEach(member => {
+      const row = document.createElement('tr');
+      row.className = 'border-b border-white/10 hover:bg-white/5 transition-colors';
+
+      row.innerHTML = `
+        <td class="p-4">
+          <div class="flex items-center">
+            <input type="checkbox" class="h-4 w-4 rounded bg-white/5 border-white/20 focus:ring-0">
+          </div>
+        </td>
+        <td class="p-4">
+          <div class="flex items-center gap-3">
+            <div class="h-10 w-10 rounded-full bg-gradient-to-r from-purple-500 to-blue-500 flex items-center justify-center">
+              <span class="font-semibold">${member.name.charAt(0)}</span>
+            </div>
+            <div>
+              <p class="font-medium">${member.name}</p>
+              <p class="text-xs text-gray-400">${member.email}</p>
+            </div>
+          </div>
+        </td>
+        <td class="p-4">${member.email}</td>
+        <td class="p-4">${member.branch || 'N/A'}</td>
+        <td class="p-4">
+          <span class="px-3 py-1 rounded-full text-xs font-medium ${member.role === 'ADMIN' ? 'badge-premium' : 'badge-standard'}">
+            ${member.role}
+          </span>
+        </td>
+        <td class="p-4">
+          <div class="flex items-center gap-2">
+            <button class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-all text-red-400 hover:text-red-300" 
+                    title="Delete Member" onclick="deleteMember('${member.id}')">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </div>
+        </td>
+      `;
+
+      tableBody.appendChild(row);
+    });
+
+    // Update the showing count
+    document.getElementById('showing-count').textContent = `1-${members.length}`;
+    document.getElementById('total-count').textContent = members.length;
+  }
+
+  // Load members and render table
+  async function loadMembers() {
+    const members = await fetchMembers();
+    const sortBy = document.getElementById('sort-by').value;
+    
+    let sortedMembers;
+    if (sortBy === 'name') {
+      sortedMembers = insertionSortAlphabetical(members);
+    } else {
+      sortedMembers = members;
+    }
+    
+    renderMembersTable(sortedMembers);
+
+    // Update the total members card
+    document.getElementById('total-members-count').textContent = members.length;
+  }
+
+  // Initialize the page
+  document.addEventListener('DOMContentLoaded', function () {
+    loadMembers();
+
+    // Handle sorting
+    const sortBySelect = document.getElementById('sort-by');
+    sortBySelect.addEventListener('change', function () {
+      loadMembers();
+    });
+  });
+</script>
+</body>
+</html>

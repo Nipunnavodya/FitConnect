@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Fitness - Member Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #1a1c2e, #14162a);
+            color: #fff;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .scale-hover:hover {
+            transform: scale(1.02);
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+<div class="flex h-screen overflow-hidden">
+    <!-- Sidebar Navigation -->
+    <aside class="hidden lg:flex flex-col w-64 h-screen glass-effect">
+        <div class="p-6">
+            <a href="#" class="flex items-center gap-3">
+                <div class="bg-gradient-to-r from-purple-500 to-blue-500 p-2.5 rounded-lg">
+                    <i class="fas fa-dumbbell text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Smart Fitness</h1>
+            </a>
+        </div>
+        <nav class="flex-1 p-4 space-y-2">
+            <a href="/user/dashboard" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+                <i class="fas fa-th-large"></i>
+                <span class="font-medium">Dashboard</span>
+            </a>
+            <a href="/user/profile" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-user"></i>
+                <span class="font-medium">Profile</span>
+            </a>
+            <a href="/user/schedule" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-calendar"></i>
+                <span class="font-medium">Schedule</span>
+            </a>
+            <a href="/exercises" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-dumbbell"></i>
+                <span class="font-medium">Exercises</span>
+            </a>
+            <a href="/monthprogress" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-chart-line"></i>
+                <span class="font-medium">Progress</span>
+            </a>
+            <a href="/diet-plan" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-apple-alt"></i>
+                <span class="font-medium">Diet Plan</span>
+            </a>
+            <a href="/user/announcements" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-bullhorn"></i>
+                <span class="font-medium">Announcements</span>
+            </a>
+            <a href="/user/settings" class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-300 hover:bg-white/10 transition-all duration-300">
+                <i class="fas fa-cog"></i>
+                <span class="font-medium">Settings</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-white/10">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="h-10 w-10 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center">
+                    <span class="font-semibold">??</span>
+                </div>
+                <div>
+                    <h3 class="font-medium"> <span th:text="${user.name}">User</span></h3>
+                </div>
+            </div>
+            <a href="/logout">
+                <button class="w-full mt-2 bg-white/10 hover:bg-white/20 text-white rounded-xl p-2.5 flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Log Out</span>
+                </button>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header -->
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Welcome back, <span th:text="${user.name}">User</span>!</h1>
+                <p class="text-gray-400 mt-2">Track your fitness journey</p>
+            </header>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="glass-effect rounded-xl p-5 scale-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-300">Workout Programs</h3>
+                            <p class="text-3xl font-semibold mt-2 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent"
+                               th:text="${assignedWorkoutPrograms != null ? #lists.size(assignedWorkoutPrograms) : 0}">0</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700">
+                            <i class="fas fa-dumbbell text-white"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-effect rounded-xl p-5 scale-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-300">Diet Plans</h3>
+                            <p class="text-3xl font-semibold mt-2 bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent"
+                               th:text="${assignedDietPlans != null ? #lists.size(assignedDietPlans) : 0}">0</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-gradient-to-br from-green-500 to-green-700">
+                            <i class="fas fa-apple-alt text-white"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-effect rounded-xl p-5 scale-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-300">Sessions / Week</h3>
+                            <p class="text-3xl font-semibold mt-2 bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent"
+                               th:text="${assignedWorkoutPrograms != null and !#lists.isEmpty(assignedWorkoutPrograms) and assignedWorkoutPrograms[0].sessionsPerWeek != null ? assignedWorkoutPrograms[0].sessionsPerWeek : '-'}">-</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-gradient-to-br from-purple-500 to-purple-700">
+                            <i class="fas fa-calendar-check text-white"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-effect rounded-xl p-5 scale-hover">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-sm font-medium text-gray-300">Daily Calories</h3>
+                            <p class="text-3xl font-semibold mt-2 bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent"
+                               th:text="${assignedDietPlans != null and !#lists.isEmpty(assignedDietPlans) and assignedDietPlans[0].dailyCalories != null ? assignedDietPlans[0].dailyCalories : '-'}">-</p>
+                        </div>
+                        <div class="p-3 rounded-xl bg-gradient-to-br from-red-500 to-red-700">
+                            <i class="fas fa-fire text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructor-Assigned Diet Plans -->
+            <div class="glass-effect rounded-xl p-6 mb-8">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold flex items-center gap-2">
+                        <i class="fas fa-apple-alt text-green-400"></i> Assigned Diet Plans
+                    </h2>
+                    <a href="/diet-plan" class="text-sm text-purple-400 hover:text-purple-300 transition-colors">View All</a>
+                </div>
+                <div th:if="${assignedDietPlans != null and !#lists.isEmpty(assignedDietPlans)}" class="space-y-3">
+                    <div th:each="plan : ${assignedDietPlans}" class="bg-white/5 rounded-xl p-4 flex items-start justify-between">
+                        <div class="flex items-start gap-3">
+                            <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-700 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-leaf text-white text-sm"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" th:text="${plan.planName}">Plan Name</h3>
+                                <p class="text-xs text-gray-400 mt-0.5">
+                                    <span th:text="${plan.goal}">Goal</span>
+                                    <span th:if="${plan.dailyCalories != null}"> &bull; <span th:text="${plan.dailyCalories}">0</span> kcal/day</span>
+                                </p>
+                                <p class="text-xs text-gray-500 mt-0.5">By <span th:text="${plan.instructorName != null ? plan.instructorName : 'Instructor'}">Instructor</span></p>
+                            </div>
+                        </div>
+                        <span th:text="${plan.status}"
+                              th:class="${plan.status == 'ACTIVE'} ? 'text-xs px-3 py-1 rounded-full bg-green-500/20 text-green-400 font-medium' : 'text-xs px-3 py-1 rounded-full bg-gray-500/20 text-gray-400 font-medium'">
+                            ACTIVE
+                        </span>
+                    </div>
+                </div>
+                <div th:if="${assignedDietPlans == null or #lists.isEmpty(assignedDietPlans)}"
+                     class="text-center py-8 text-gray-500">
+                    <i class="fas fa-apple-alt text-3xl mb-3 opacity-30"></i>
+                    <p class="text-sm">No diet plans assigned yet. Your instructor will add them here.</p>
+                </div>
+            </div>
+
+            <!-- Instructor-Assigned Workout Programs -->
+            <div class="glass-effect rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold flex items-center gap-2">
+                        <i class="fas fa-dumbbell text-blue-400"></i> Assigned Workout Programs
+                    </h2>
+                    <a href="/user/schedule" class="text-sm text-purple-400 hover:text-purple-300 transition-colors">View Schedule</a>
+                </div>
+                <div th:if="${assignedWorkoutPrograms != null and !#lists.isEmpty(assignedWorkoutPrograms)}" class="space-y-3">
+                    <div th:each="prog : ${assignedWorkoutPrograms}" class="bg-white/5 rounded-xl p-4 flex items-start justify-between">
+                        <div class="flex items-start gap-3">
+                            <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-700 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-running text-white text-sm"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium" th:text="${prog.programName}">Program Name</h3>
+                                <p class="text-xs text-gray-400 mt-0.5">
+                                    <span th:text="${prog.fitnessGoal}">Goal</span>
+                                    <span th:if="${prog.difficulty != null}"> &bull; <span th:text="${prog.difficulty}">Difficulty</span></span>
+                                    <span th:if="${prog.durationWeeks != null}"> &bull; <span th:text="${prog.durationWeeks}">0</span> weeks</span>
+                                </p>
+                                <p class="text-xs text-gray-500 mt-0.5">By <span th:text="${prog.instructorName != null ? prog.instructorName : 'Instructor'}">Instructor</span></p>
+                            </div>
+                        </div>
+                        <span th:text="${prog.status}"
+                              th:class="${prog.status == 'ACTIVE'} ? 'text-xs px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 font-medium' : 'text-xs px-3 py-1 rounded-full bg-gray-500/20 text-gray-400 font-medium'">
+                            ACTIVE
+                        </span>
+                    </div>
+                </div>
+                <div th:if="${assignedWorkoutPrograms == null or #lists.isEmpty(assignedWorkoutPrograms)}"
+                     class="text-center py-8 text-gray-500">
+                    <i class="fas fa-dumbbell text-3xl mb-3 opacity-30"></i>
+                    <p class="text-sm">No workout programs assigned yet. Your instructor will add them here.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

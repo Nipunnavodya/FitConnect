@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Plans</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background-color: #0c0f18; color: white; text-align: center; }
+
+        /* Current Plan Banner */
+        .current-plan-banner {
+            background: linear-gradient(135deg, #1a1f2e 0%, #2a1f3e 100%);
+            border: 1px solid #facc15;
+            border-radius: 15px;
+            padding: 25px 30px;
+            max-width: 900px;
+            margin: 30px auto;
+            display: none;
+            text-align: left;
+        }
+        .current-plan-banner.visible { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+        .current-plan-info h3 { color: #facc15; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .current-plan-info h2 { font-size: 24px; color: white; }
+        .current-plan-info p { color: #aaa; font-size: 14px; margin-top: 5px; }
+        .current-plan-badge { background: linear-gradient(135deg, #f25a07, #facc15); color: black; padding: 8px 20px; border-radius: 20px; font-weight: bold; font-size: 14px; }
+
+        /* Hero Section */
+        .hero { background: linear-gradient(to bottom right, rgba(250, 204, 21, 0.05), transparent); padding: 80px 20px 40px; text-align: center; }
+        .hero-content { max-width: 800px; margin: 0 auto; }
+        .badge { display: inline-block; padding: 5px 10px; background-color: rgba(230, 15, 15, 0.1); color: #facc15; border-radius: 20px; font-size: 14px; font-weight: bold; margin-bottom: 20px; }
+        .hero h1 { font-size: 42px; margin-bottom: 20px; }
+        .hero p { font-size: 18px; color: #aaa; max-width: 600px; margin: 0 auto; }
+
+        /* Plans Section */
+        #membership-plans { padding: 50px 20px; }
+        .plans-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px; margin: auto; }
+
+        .plan { background: #1a1f2e; padding: 30px 20px; border-radius: 10px; width: 280px; text-align: center; transition: transform 0.3s, box-shadow 0.3s; position: relative; overflow: hidden; border: 2px solid transparent; box-shadow: 0 5px 15px rgba(255,255,0,0.1); animation: fadeIn 0.8s ease-in-out; }
+        .plan:hover { transform: scale(1.08); box-shadow: 0 15px 40px rgba(217,88,74,0.7); border-color: #df6e49; z-index: 10; }
+        .plan.highlighted { border: 1px solid #0a8cf0; box-shadow: 0 5px 20px rgba(255,255,0,0.5); animation: floatEffect 3s infinite ease-in-out; }
+        .plan.current-active { border: 2px solid #facc15; box-shadow: 0 5px 20px rgba(250,204,21,0.4); }
+        .plan.current-active::after { content: 'CURRENT PLAN'; position: absolute; top: 10px; left: 10px; background: #facc15; color: black; padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: bold; }
+
+        .popular-badge { position: absolute; top: 15px; right: -30px; background: #ed0707; color: black; transform: rotate(45deg); padding: 5px 30px; font-size: 12px; font-weight: bold; }
+        .plan h3 { font-size: 24px; margin-bottom: 10px; }
+        .price { font-size: 32px; color: #facc15; font-weight: bold; margin-bottom: 5px; }
+        .duration { color: #888; font-size: 13px; margin-bottom: 10px; }
+        .description { color: #aaa; font-size: 14px; margin-bottom: 20px; }
+        .plan ul { list-style: none; padding: 0; margin: 15px 0; text-align: left; }
+        .plan ul li { font-size: 16px; margin: 10px 0; padding-left: 25px; position: relative; }
+        .plan ul li::before { content: '\2714'; color: limegreen; position: absolute; left: 0; }
+
+        .join-btn { display: inline-block; background: #f25a07; color: black; padding: 12px 30px; border-radius: 5px; font-weight: bold; text-decoration: none; margin-top: 20px; transition: all 0.3s; cursor: pointer; border: none; font-size: 16px; }
+        .join-btn:hover { background: #e6e935; transform: scale(1.1); }
+        .join-btn.subscribed { background: #4ade80; cursor: default; }
+        .join-btn.subscribed:hover { transform: none; }
+
+        /* Payment Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; display: none; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: #1a1f2e; border: 1px solid #2a2f3e; border-radius: 20px; padding: 40px; max-width: 500px; width: 90%; text-align: left; position: relative; }
+        .modal h2 { font-size: 24px; margin-bottom: 20px; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #aaa; background: none; border: none; }
+        .modal-close:hover { color: white; }
+        .modal-plan-summary { background: #0c0f18; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
+        .modal-plan-summary h3 { color: #facc15; margin-bottom: 5px; }
+        .modal-plan-summary .modal-price { font-size: 24px; font-weight: bold; }
+
+        .payment-methods { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
+        .payment-methods label { display: flex; align-items: center; gap: 12px; padding: 12px 15px; background: #0c0f18; border: 2px solid transparent; border-radius: 10px; cursor: pointer; transition: all 0.2s; }
+        .payment-methods label:hover { border-color: #f25a07; }
+        .payment-methods input[type="radio"] { accent-color: #f25a07; width: 18px; height: 18px; }
+        .payment-methods input[type="radio"]:checked + .pm-icon + .pm-text { color: #facc15; }
+        .payment-methods label:has(input:checked) { border-color: #f25a07; background: rgba(242,90,7,0.1); }
+        .pm-icon { font-size: 20px; width: 30px; text-align: center; }
+        .pm-text { font-size: 15px; }
+
+        .subscribe-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #f25a07, #facc15); color: black; font-size: 16px; font-weight: bold; border: none; border-radius: 10px; cursor: pointer; transition: all 0.3s; }
+        .subscribe-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(242,90,7,0.3); }
+        .subscribe-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* Payment History Section */
+        .payment-history { padding: 60px 20px; max-width: 1000px; margin: 0 auto; }
+        .payment-history h2 { font-size: 28px; margin-bottom: 30px; text-align: center; }
+        .payment-history-empty { color: #888; font-size: 16px; padding: 40px; }
+        .payments-table { width: 100%; border-collapse: collapse; background: #1a1f2e; border-radius: 10px; overflow: hidden; }
+        .payments-table th { background: #2a2f3e; padding: 12px 15px; text-align: left; font-size: 13px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+        .payments-table td { padding: 12px 15px; border-bottom: 1px solid #2a2f3e; font-size: 14px; }
+        .payments-table tr:last-child td { border-bottom: none; }
+        .status-badge { padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; }
+        .status-badge.completed { background: rgba(74,222,128,0.15); color: #4ade80; }
+        .status-badge.pending { background: rgba(250,204,21,0.15); color: #facc15; }
+        .status-badge.failed { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+        /* Toast Notification */
+        .toast { position: fixed; top: 30px; right: 30px; background: #1a1f2e; border: 1px solid #4ade80; border-radius: 10px; padding: 15px 25px; z-index: 2000; display: none; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideIn 0.3s ease; }
+        .toast.show { display: flex; }
+        .toast.error { border-color: #ef4444; }
+        .toast i { font-size: 20px; }
+        .toast.success i { color: #4ade80; }
+        .toast.error i { color: #ef4444; }
+
+        /* Loading Spinner */
+        .loading { text-align: center; padding: 60px; color: #aaa; font-size: 18px; }
+        .spinner { border: 4px solid #2a2f3e; border-top: 4px solid #facc15; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+
+        /* Back Link */
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: #aaa; text-decoration: none; padding: 15px 20px; font-size: 15px; transition: color 0.2s; }
+        .back-link:hover { color: #facc15; }
+
+        @keyframes floatEffect { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        @media (max-width: 768px) {
+            .hero { padding-top: 60px; }
+            .hero h1 { font-size: 32px; }
+            .plan:hover { transform: scale(1.05); }
+            .current-plan-banner.visible { flex-direction: column; text-align: center; }
+            .payments-table { font-size: 12px; }
+            .payments-table th, .payments-table td { padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="/profile" class="back-link"><i class="fas fa-arrow-left"></i> Back to Profile</a>
+
+<!-- Current Plan Banner -->
+<div class="current-plan-banner" id="currentPlanBanner">
+    <div class="current-plan-info">
+        <h3><i class="fas fa-crown"></i> Your Current Plan</h3>
+        <h2 id="currentPlanName">-</h2>
+        <p id="currentPlanDetails"></p>
+    </div>
+    <span class="current-plan-badge" id="currentPlanPrice"></span>
+</div>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <span class="badge">Membership Plans</span>
+        <h1>Choose Your Membership Plan</h1>
+        <p>Flexible membership options designed to fit your lifestyle, goals, and budget. No long-term commitments required.</p>
+    </div>
+</section>
+
+<!-- Plans Section (Dynamic) -->
+<section id="membership-plans">
+    <div class="plans-container" id="plansContainer">
+        <div class="loading">
+            <div class="spinner"></div>
+            Loading plans...
+        </div>
+    </div>
+</section>
+
+<!-- Payment History Section -->
+<section class="payment-history" id="paymentHistorySection" style="display:none;">
+    <h2><i class="fas fa-history"></i> Your Payment History</h2>
+    <div id="paymentHistoryContent"></div>
+</section>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="paymentModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closePaymentModal()">&times;</button>
+        <h2><i class="fas fa-credit-card"></i> Complete Your Subscription</h2>
+        <div class="modal-plan-summary">
+            <h3 id="modalPlanName"></h3>
+            <p class="modal-price" id="modalPlanPrice"></p>
+            <p style="color:#aaa; font-size:13px;" id="modalPlanDuration"></p>
+        </div>
+        <h4 style="margin-bottom:10px; color:#ccc;">Select Payment Method</h4>
+        <div class="payment-methods">
+            <label>
+                <input type="radio" name="paymentMethod" value="Credit Card">
+                <span class="pm-icon"><i class="fas fa-credit-card"></i></span>
+                <span class="pm-text">Credit Card</span>
+            </label>
+            <label>
+                <input type="radio" name="paymentMethod" value="Debit Card">
+                <span class="pm-icon"><i class="fas fa-money-check"></i></span>
+                <span class="pm-text">Debit Card</span>
+            </label>
+            <label>
+                <input type="radio" name="paymentMethod" value="Bank Transfer">
+                <span class="pm-icon"><i class="fas fa-university"></i></span>
+                <span class="pm-text">Bank Transfer</span>
+            </label>
+            <label>
+                <input type="radio" name="paymentMethod" value="Cash">
+                <span class="pm-icon"><i class="fas fa-money-bill-wave"></i></span>
+                <span class="pm-text">Cash</span>
+            </label>
+        </div>
+        <button class="subscribe-btn" id="confirmSubscribeBtn" onclick="confirmSubscription()" disabled>
+            <i class="fas fa-lock"></i> Subscribe Now
+        </button>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage"></span>
+</div>
+
+<script>
+    let allPlans = [];
+    let currentPlan = null;
+    let selectedPlanForModal = null;
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        loadCurrentPlan();
+        loadPlans();
+        loadPaymentHistory();
+
+        // Enable subscribe button when payment method is selected
+        document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                document.getElementById('confirmSubscribeBtn').disabled = false;
+            });
+        });
+    });
+
+    async function loadCurrentPlan() {
+        try {
+            const res = await fetch('/api/my-plan');
+            if (res.ok) {
+                const plan = await res.json();
+                if (plan && plan.id) {
+                    currentPlan = plan;
+                    document.getElementById('currentPlanName').textContent = plan.name;
+                    document.getElementById('currentPlanDetails').textContent = plan.description + ' - ' + plan.durationMonths + ' month(s)';
+                    document.getElementById('currentPlanPrice').textContent = 'Rs. ' + Number(plan.price).toLocaleString() + '/mo';
+                    document.getElementById('currentPlanBanner').classList.add('visible');
+                }
+            }
+        } catch (e) {
+            console.error('Failed to load current plan:', e);
+        }
+    }
+
+    async function loadPlans() {
+        try {
+            const res = await fetch('/plans');
+            if (!res.ok) throw new Error('Failed to fetch plans');
+            allPlans = await res.json();
+            renderPlans();
+        } catch (e) {
+            document.getElementById('plansContainer').innerHTML = '<p style="color:#ef4444;">Failed to load plans. Please try again later.</p>';
+        }
+    }
+
+    function renderPlans() {
+        const container = document.getElementById('plansContainer');
+        if (allPlans.length === 0) {
+            container.innerHTML = '<p style="color:#aaa; padding:40px;">No membership plans available at the moment.</p>';
+            return;
+        }
+        container.innerHTML = allPlans.map(plan => {
+            const features = plan.features ? plan.features.split('|') : [];
+            const isCurrent = currentPlan && currentPlan.id === plan.id;
+            const isPopular = plan.popular;
+            let cardClass = 'plan';
+            if (isPopular) cardClass += ' highlighted';
+            if (isCurrent) cardClass += ' current-active';
+
+            return `
+                <div class="${cardClass}">
+                    ${isPopular ? '<span class="popular-badge">Most Popular</span>' : ''}
+                    <h3>${escapeHtml(plan.name)}</h3>
+                    <p class="price">Rs. ${Number(plan.price).toLocaleString()}</p>
+                    <p class="duration">${plan.durationMonths} month${plan.durationMonths > 1 ? 's' : ''}</p>
+                    <p class="description">${escapeHtml(plan.description || '')}</p>
+                    <ul>
+                        ${features.map(f => `<li>${escapeHtml(f.trim())}</li>`).join('')}
+                    </ul>
+                    ${isCurrent
+                        ? '<button class="join-btn subscribed" disabled><i class="fas fa-check"></i> Subscribed</button>'
+                        : `<button class="join-btn" onclick="openPaymentModal(${plan.id})"><i class="fas fa-bolt"></i> Join Now</button>`
+                    }
+                </div>
+            `;
+        }).join('');
+    }
+
+    function openPaymentModal(planId) {
+        selectedPlanForModal = allPlans.find(p => p.id === planId);
+        if (!selectedPlanForModal) return;
+
+        document.getElementById('modalPlanName').textContent = selectedPlanForModal.name;
+        document.getElementById('modalPlanPrice').textContent = 'Rs. ' + Number(selectedPlanForModal.price).toLocaleString();
+        document.getElementById('modalPlanDuration').textContent = selectedPlanForModal.durationMonths + ' month(s) subscription';
+
+        // Reset payment method selection
+        document.querySelectorAll('input[name="paymentMethod"]').forEach(r => r.checked = false);
+        document.getElementById('confirmSubscribeBtn').disabled = true;
+        document.getElementById('confirmSubscribeBtn').innerHTML = '<i class="fas fa-lock"></i> Subscribe Now';
+
+        document.getElementById('paymentModal').classList.add('active');
+    }
+
+    function closePaymentModal() {
+        document.getElementById('paymentModal').classList.remove('active');
+        selectedPlanForModal = null;
+    }
+
+    async function confirmSubscription() {
+        if (!selectedPlanForModal) return;
+        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+        if (!paymentMethod) return;
+
+        const btn = document.getElementById('confirmSubscribeBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+        try {
+            const res = await fetch('/api/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    planId: selectedPlanForModal.id,
+                    paymentMethod: paymentMethod.value
+                })
+            });
+
+            if (!res.ok) {
+                const errorData = await res.json().catch(() => ({}));
+                throw new Error(errorData.error || 'Subscription failed');
+            }
+
+            const result = await res.json();
+
+            const subscribedPlanName = selectedPlanForModal.name;
+            closePaymentModal();
+            showToast('Successfully subscribed to ' + subscribedPlanName + '!', 'success');
+
+            // Reload data
+            await loadCurrentPlan();
+            renderPlans();
+            await loadPaymentHistory();
+
+        } catch (e) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-lock"></i> Subscribe Now';
+            showToast(e.message || 'Subscription failed. Please try again.', 'error');
+        }
+    }
+
+    async function loadPaymentHistory() {
+        try {
+            const res = await fetch('/api/my-payments');
+            if (!res.ok) throw new Error('Failed to load payments');
+            const payments = await res.json();
+
+            const section = document.getElementById('paymentHistorySection');
+            const content = document.getElementById('paymentHistoryContent');
+
+            if (payments.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+            content.innerHTML = `
+                <table class="payments-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Plan</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${payments.map(p => `
+                            <tr>
+                                <td>${formatDate(p.paymentDate)}</td>
+                                <td>${escapeHtml(p.planName || 'N/A')}</td>
+                                <td style="color:#facc15; font-weight:bold;">Rs. ${Number(p.amount).toLocaleString()}</td>
+                                <td>${escapeHtml(p.paymentMethod || '')}</td>
+                                <td><span class="status-badge ${(p.status || '').toLowerCase()}">${escapeHtml(p.status || '')}</span></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (e) {
+            console.error('Failed to load payment history:', e);
+        }
+    }
+
+    function formatDate(dateStr) {
+        if (!dateStr) return 'N/A';
+        try {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        } catch { return dateStr; }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function showToast(message, type) {
+        const toast = document.getElementById('toast');
+        const icon = toast.querySelector('i');
+        document.getElementById('toastMessage').textContent = message;
+        toast.className = 'toast show ' + type;
+        icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+        setTimeout(() => { toast.classList.remove('show'); }, 4000);
+    }
+
+    // Close modal on overlay click
+    document.getElementById('paymentModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('paymentModal')) closePaymentModal();
+    });
+</script>
+</body>
+</html>
